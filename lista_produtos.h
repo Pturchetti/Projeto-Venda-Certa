@@ -8,11 +8,7 @@ typedef struct codigos {
     int ultimo_codigo_pedido;
 } Codigos;
 
-typedef struct dados_pedido{
-    int codigo_pedido;
-    char codigo_entrega[10];
-    int status;
-}dados_pedido;
+
 
 typedef struct No{
     struct No *proximo;
@@ -32,8 +28,6 @@ ListaProdutos *criar_lista_produtos();
 No *inserir_produtos(ListaProdutos *lista, Produto produto);
 
 Produto buscar_produto(Produto catalogo[], int tamanho);
-
-dados_pedido *registrar_dados(Codigos *codigos);
 
 void ver_produtos(Produto catalogo[],int tamanho);
 

@@ -3,10 +3,6 @@
 #include <string.h>
 #include "lista_produtos.h"
 
-void limpar() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
 
 ListaProdutos *criar_lista_produtos()
 {
@@ -110,37 +106,7 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
     return novo;
 }
 
-dados_pedido *registrar_dados(Codigos *codigos)
-{
-    dados_pedido *dados = (dados_pedido*) malloc(sizeof(dados_pedido));
-    if (dados == NULL) return NULL;
 
-    dados->codigo_pedido = ++codigos->ultimo_codigo_pedido;
-
-
-    printf("DIGITE O CÓDIGO DE ENTREGA: ");
-    limpar();
-    fgets(dados->codigo_entrega,10,stdin);
-
-    printf("DESEJA FECHAR O PEDIDO?(s/n)\n");
-    while(1)
-    {
-        char resposta;
-        scanf(" %c", &resposta);
-        if(resposta == 's')
-        {
-            dados->status = 1;
-            break;
-        }
-        else if(resposta == 'n')
-        {
-            dados->status = 0;
-            break;
-        }
-        else printf("\nRESPOSTA INVÁLIDA\n");
-    }
-    return dados;
-}
 
 void ver_produtos(Produto catalogo[],int tamanho)
 {

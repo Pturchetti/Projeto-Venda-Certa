@@ -4,6 +4,7 @@
 #include "json_produtos.h"
 #include "cadastro.h"
 #include "lista_pedidos.h"
+#include "fila_empacotamento.h"
 
 void limpar_buffer() {
     int c;
@@ -47,7 +48,7 @@ void cadastrar() {
     }
 }
 
-void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos) {
+void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pacotes *fila) {
     printf("Cadastrar pedido...\n");
 
     ListaProdutos *lista = criar_lista_produtos();
@@ -127,12 +128,19 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos) {
 
         if (resposta == 's') {
             inserir_lista_pedidos(lista, dados,lista_pedidos);
-            cadastrar_pedido(codigos, lista_pedidos);
+
+            if(dados->status == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+
+            cadastrar_pedido(codigos, lista_pedidos,fila);
             break;
         } else if (resposta == 'n') {
             inserir_lista_pedidos(lista, dados,lista_pedidos);
+
+            if(dados->status == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+
             break;
-        } else {
+        } 
+        else {
             printf("RESPOSTA INVÁLIDA\n");
         }
     }
@@ -228,7 +236,7 @@ int main(void) {
     Codigos codigos;
     codigos.ultimo_codigo_pedido = 0;
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
-
+    Fila_Pacotes *fila_pedidos_empacotar = criar_fila();
 
     if (lista_pedidos == NULL) {
         printf("Não foi possível criar a lista de pedidos.\n");
@@ -241,6 +249,7 @@ int main(void) {
         printf("2. Cadastrar Pedido\n");
         printf("3. Produtos\n");
         printf("4. Pedidos\n");
+        printf("5. Ver fila\n");
         printf("0. Encerrar\n\n");
 
         printf("Informe sua opcao: ");
@@ -256,7 +265,7 @@ int main(void) {
                 break;
 
             case 2:
-                cadastrar_pedido(&codigos,lista_pedidos);
+                cadastrar_pedido(&codigos,lista_pedidos,fila_pedidos_empacotar);
                 pausar();
                 break;
 
@@ -269,7 +278,12 @@ int main(void) {
                 pedidos(lista_pedidos);
                 pausar();
                 break;
-            
+
+            case 5:
+                ver_fila(fila_pedidos_empacotar);
+                pausar();
+                break;
+
             case 0:
                 printf("Encerrando...\n");
                 break;
