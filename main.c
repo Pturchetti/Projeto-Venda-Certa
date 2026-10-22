@@ -8,7 +8,8 @@ int main(void) {
     Codigos codigos;
     codigos.ultimo_codigo_pedido = 0;
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
-    Fila_Pacotes *fila_pedidos_empacotar = criar_fila();
+    Fila_Pedidos *fila_pedidos_empacotar = criar_fila();
+    Fila_caixas *fila_caixas = criar_fila_caixas();
 
     if (lista_pedidos == NULL) {
         printf("Não foi possível criar a lista de pedidos.\n");

@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include "fila_empacotamento.h"
 
-Fila_Pacotes *criar_fila()
+Fila_Pedidos *criar_fila()
 {
-    Fila_Pacotes *fila = (Fila_Pacotes*) malloc(sizeof(Fila_Pacotes));
+    Fila_Pedidos *fila = (Fila_Pedidos*) malloc(sizeof(Fila_Pedidos));
     if(fila == NULL) return NULL;
 
     fila->cabeca = NULL;
@@ -15,7 +15,7 @@ Fila_Pacotes *criar_fila()
     return fila;
 }
 
-No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pacotes *fila)
+No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pedidos *fila)
 {
     No_fila *novo = (No_fila*) malloc(sizeof(No_fila));
     if(novo == NULL) return NULL;
@@ -41,7 +41,7 @@ No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pacotes *fila)
 
 }
 
-void ver_fila(Fila_Pacotes *fila)
+void ver_fila(Fila_Pedidos *fila)
 {
     if(fila->cabeca == NULL)
     {

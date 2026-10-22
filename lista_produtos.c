@@ -88,7 +88,7 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
     else break;
     }
     novo->quantidade = quantidade;
-    novo->volume_total = produto.volume*quantidade;
+    novo->volume = produto.volume;
     novo->proximo = NULL;
 
     if(lista->primeiro == NULL)

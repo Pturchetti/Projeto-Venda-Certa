@@ -48,7 +48,7 @@ void cadastrar() {
     }
 }
 
-void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pacotes *fila) {
+void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedidos *fila) {
     printf("Cadastrar pedido...\n");
 
     ListaProdutos *lista = criar_lista_produtos();

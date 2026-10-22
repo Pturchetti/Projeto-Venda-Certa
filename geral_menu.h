@@ -3,14 +3,14 @@
 
 #include "lista_pedidos.h"
 #include "fila_empacotamento.h"
+#include "caixas.h"
 
 void limpar_buffer(void);
 void limpar_tela(void);
 void pausar(void);
 
 void cadastrar(void);
-void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,
-                      Fila_Pacotes *fila);
+void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,Fila_Pedidos *fila);
 void produtos(void);
 void pedidos(ListaPedidos *lista_pedidos);
 

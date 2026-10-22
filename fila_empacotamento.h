@@ -11,15 +11,15 @@ typedef struct No_fila{
    No_pedidos *pedido;
 }No_fila;
 
-typedef struct Fila_Pacotes{
+typedef struct Fila_Pedidos{
     No_fila *cabeca;
     No_fila *cauda;
     int tamanho;
-}Fila_Pacotes;
+}Fila_Pedidos;
 
-Fila_Pacotes *criar_fila();
+Fila_Pedidos *criar_fila();
 
-No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pacotes *fila);
+No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pedidos *fila);
 
-void ver_fila(Fila_Pacotes *fila);
+void ver_fila(Fila_Pedidos *fila);
 #endif

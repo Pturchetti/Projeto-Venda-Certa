@@ -9,6 +9,7 @@ typedef struct dados_pedido{
     int codigo_pedido;
     char codigo_entrega[10];
     int status;
+    int empacotado;
 }dados_pedido;
 
 typedef struct No_pedidos{

@@ -14,7 +14,7 @@ typedef struct No{
     struct No *proximo;
     int codigo_produto;
     int quantidade;
-    int volume_total;
+    int volume;
 }No;
 
 typedef struct  ListaProdutos{
