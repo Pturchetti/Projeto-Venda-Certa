@@ -60,6 +60,12 @@ Produto buscar_produto(Produto catalogo[], int tamanho)
 
 No *inserir_produtos(ListaProdutos *lista, Produto produto)
 {
+    if(produto.quantidade == 0)
+    {
+        printf("PRODUTO SEM ESTOQUE!\n");
+        return NULL;
+    }
+
     printf("\nCÓDIGO DO PRODUTO: %d\n", produto.codigo);
     printf("\nNOME DO PRODUTO: %s\n", produto.nome);
     printf("\nQUANTIDADE DISPONÍVEL DO PRODUTO: %d\n", produto.quantidade);

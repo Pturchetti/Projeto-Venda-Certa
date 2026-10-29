@@ -123,7 +123,7 @@ void ver_pedidos(ListaPedidos *lista_pedidos)
         {
             printf("Código do produto: %d ||", produto_atual->codigo_produto);
             printf("Quantidade: %d ||",produto_atual->quantidade);
-            printf("Volume total: %d\n",produto_atual->volume);
+            printf("Volume do produto: %d\n",produto_atual->volume);
             produto_atual = produto_atual->proximo;
         }
 

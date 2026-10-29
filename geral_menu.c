@@ -36,7 +36,11 @@ void cadastrar() {
             char resposta; 
             scanf(" %c", &resposta);
 
-            if(resposta == 's') break;
+            if(resposta == 's')
+            {
+                limpar_buffer();
+                break;
+            }
             else if(resposta == 'n')
             {
                 cadastro = 0;
@@ -181,6 +185,7 @@ void produtos()
                 pausar();
                 break;
             case 0:
+                free(catalogo);
                 return;
             default:
                 printf("Opcao invalida!\n");

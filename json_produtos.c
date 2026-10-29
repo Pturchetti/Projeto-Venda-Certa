@@ -310,22 +310,34 @@ int json_produtos_salvar(
         (quantidade > 0 && produtos == NULL))
         return 0;
 
-    FILE *arquivo = fopen(caminho, "w");
+    for (int i = 0; i < quantidade; i++) {
+        if (produtos[i].codigo <= 0 ||
+            produtos[i].nome[0] == '\0' ||
+            memchr(produtos[i].nome, '\0', sizeof(produtos[i].nome)) == NULL ||
+            produtos[i].volume <= 0 || produtos[i].quantidade < 0)
+            return 0;
 
-    if (arquivo == NULL)
+        for (int j = 0; j < i; j++) {
+            if (produtos[i].codigo == produtos[j].codigo)
+                return 0;
+        }
+    }
+
+    char *temporario = malloc(strlen(caminho) + 5);
+    if (temporario == NULL)
         return 0;
+
+    sprintf(temporario, "%s.tmp", caminho);
+    FILE *arquivo = fopen(temporario, "w");
+
+    if (arquivo == NULL) {
+        free(temporario);
+        return 0;
+    }
 
     int valido = fprintf(arquivo, "[\n") >= 0;
 
     for (int i = 0; valido && i < quantidade; i++) {
-        if (produtos[i].codigo <= 0 ||
-            produtos[i].nome[0] == '\0' ||
-            produtos[i].volume <= 0 ||
-            produtos[i].quantidade < 0) {
-            valido = 0;
-            break;
-        }
-
         if (fprintf(arquivo,
                     "  {\n"
                     "    \"codigo\": %d,\n"
@@ -392,6 +404,13 @@ int json_produtos_salvar(
     if (fclose(arquivo) != 0)
         valido = 0;
 
+    if (valido && rename(temporario, caminho) != 0)
+        valido = 0;
+
+    if (!valido)
+        remove(temporario);
+
+    free(temporario);
     return valido;
 }
 
