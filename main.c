@@ -23,6 +23,8 @@ int main(void) {
         printf("3. Produtos\n");
         printf("4. Pedidos\n");
         printf("5. Ver fila\n");
+        printf("6. Empacotar\n");
+        printf("7. Ver caixas\n");
         printf("0. Encerrar\n\n");
 
         printf("Informe sua opcao: ");
@@ -57,6 +59,16 @@ int main(void) {
                 pausar();
                 break;
 
+            case 6:
+                empacotar(fila_pedidos_empacotar, fila_caixas);
+                pausar();
+                break;
+
+
+            case 7:
+                ver_caixas(fila_caixas);
+                pausar();
+                break;
             case 0:
                 printf("Encerrando...\n");
                 break;

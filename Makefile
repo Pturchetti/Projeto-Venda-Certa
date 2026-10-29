@@ -1,7 +1,7 @@
 
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11
-OBJETOS = main.o cadastro.o lista_produtos.o lista_pedidos.o json_produtos.o fila_empacotamento.o geral_menu.o
+OBJETOS = main.o cadastro.o lista_produtos.o lista_pedidos.o json_produtos.o fila_empacotamento.o geral_menu.o caixas.o
 
 venda_certa: $(OBJETOS)
 	$(CC) $(CFLAGS) -o venda_certa $(OBJETOS)
@@ -27,5 +27,9 @@ fila_empacotamento.o: fila_empacotamento.c fila_empacotamento.h lista_pedidos.h
 geral_menu.o: geral_menu.c geral_menu.h lista_produtos.h json_produtos.h cadastro.h lista_pedidos.h fila_empacotamento.h
 	$(CC) $(CFLAGS) -c geral_menu.c
 
+caixas.o: caixas.c caixas.h lista_produtos.h lista_pedidos.h fila_empacotamento.h
+	$(CC) $(CFLAGS) -c caixas.c
+
 clean:
 	rm -f $(OBJETOS) venda_certa
+

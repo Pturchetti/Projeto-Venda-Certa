@@ -69,6 +69,20 @@ dados_pedido *registrar_dados(Codigos *codigos)
     limpar();
     fgets(dados->codigo_entrega,10,stdin);
 
+
+    printf("Digite a prioridade do pedido\n");
+    printf("Expresso - 1\n");
+    printf("Rápido - 2\n");
+    printf("Normal - 3\n");
+    while(1)
+    {
+        scanf("%d", &dados->prioridade);
+        if(dados->prioridade != 1 || dados->prioridade != 2 || dados->prioridade !=3)
+        {
+            printf("Opção inválida,digite novamente\n");
+        }
+        else break;
+    }
     printf("DESEJA FECHAR O PEDIDO?(s/n)\n");
     while(1)
     {
@@ -109,7 +123,7 @@ void ver_pedidos(ListaPedidos *lista_pedidos)
         {
             printf("Código do produto: %d ||", produto_atual->codigo_produto);
             printf("Quantidade: %d ||",produto_atual->quantidade);
-            printf("Volume total: %d\n",produto_atual->volume_total);
+            printf("Volume total: %d\n",produto_atual->volume);
             produto_atual = produto_atual->proximo;
         }
 

@@ -1,9 +1,13 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "caixas.h"
 
 Fila_caixas *criar_fila_caixas()
 {
-    Fila_caixas *fila = (Fila_caixas*) malloc(sizeof(Fila_caixas));
+    Fila_caixas *fila = (Fila_caixas*)malloc(sizeof(Fila_caixas));
+
     if(fila == NULL) return NULL;
 
     fila->cabeca = NULL;
@@ -16,48 +20,39 @@ Fila_caixas *criar_fila_caixas()
 Caixa *criar_caixa()
 {
     Caixa *caixa = (Caixa*)malloc(sizeof(Caixa));
+
     if(caixa == NULL)
     {
         printf("Não foi possível criar a caixa\n");
         return NULL;
     }
+
+    caixa->codigo_entrega[0] = '\0';
     caixa->volume = 0;
     caixa->topo = NULL;
+    caixa->prioridade = -1;
+
     return caixa;
 }
-
-
-
 
 No *inserir_na_caixa(No *produto_atual, Caixa *caixa)
 {
     No *novo = (No*)malloc(sizeof(No));
-    if(novo==NULL)
+
+    if(novo == NULL)
     {
-        printf("Não foi possivel inserir o produto na caixa");
+        printf("Não foi possível inserir o produto na caixa\n");
         return NULL;
     }
 
-    novo->codigo_produto=produto_atual->codigo_produto;
+    novo->codigo_produto = produto_atual->codigo_produto;
     novo->quantidade = 1;
     novo->volume = produto_atual->volume;
 
+    novo->proximo = caixa->topo;
+    caixa->topo = novo;
+    caixa->volume += novo->volume;
 
-    if(caixa->topo == NULL)
-    {
-        caixa->topo = novo;
-        caixa->topo->proximo = NULL;
-        caixa->volume+=novo->volume;
-    }
-    else
-    {
-        No *topo_antigo = caixa->topo;
-        caixa->topo = novo;
-        caixa->topo->proximo = topo_antigo;
-        caixa->volume+=novo->volume;
-    }
-
-    produto_atual->quantidade-=1;
     return novo;
 }
 
@@ -65,9 +60,9 @@ No_caixa *inserir_fila_caixas(Caixa *caixa, Fila_caixas *fila_caixas)
 {
     No_caixa *novo = (No_caixa*)malloc(sizeof(No_caixa));
 
-    if(novo== NULL)
+    if(novo == NULL)
     {
-        printf("Não foi possivel inserir a caixa na fila de caixas");
+        printf("Não foi possível inserir a caixa na fila de caixas\n");
         return NULL;
     }
 
@@ -77,59 +72,163 @@ No_caixa *inserir_fila_caixas(Caixa *caixa, Fila_caixas *fila_caixas)
     if(fila_caixas->cabeca == NULL)
     {
         fila_caixas->cabeca = novo;
-        fila_caixas->cauda =novo;
-        fila_caixas->tamanho++;
+        fila_caixas->cauda = novo;
     }
     else
     {
         fila_caixas->cauda->proximo = novo;
         fila_caixas->cauda = novo;
-        fila_caixas->tamanho++;
     }
+
+    fila_caixas->tamanho++;
+
     return novo;
 }
 
-
-void empacotar(Fila_Pedidos *fila_pedidos,Fila_caixas *fila_caixas)
+int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maximo_caixa, Fila_caixas *fila_caixas)
 {
+    if(pedido_atual == NULL || fila_caixas == NULL)return 0;
 
-    int codigo_atual;
-    int volume_maximo_caixa = 10;
+    Caixa *caixa = criar_caixa();
 
-    No_pedidos *pedido_atual = fila_pedidos->cabeca->pedido;
+    if(caixa == NULL)return 0;
+
     No *produto_atual = pedido_atual->lista->primeiro;
-    while(fila_pedidos->cabeca !=NULL)
-    {
-        codigo_atual = pedido_atual->dados->codigo_entrega;
-        Caixa *caixa = criar_caixa();
 
-        while(pedido_atual != NULL)
+    while(produto_atual != NULL)
+    {
+        int quantidade_restante = produto_atual->quantidade;
+
+        while(quantidade_restante > 0)
         {
-            if(caixa->volume+produto_atual->volume>volume_maximo_caixa)
+            if(caixa->volume + produto_atual->volume > volume_maximo_caixa)
             {
-                caixa->codigo_entrega = codigo_atual;
-                Caixa *nova_caixa = criar_caixa();
-                inserir_fila_caixas(caixa,fila_caixas);
-                caixa = nova_caixa;
-            }
-            else if(produto_atual->quantidade!=0)
-            {
-                inserir_na_caixa(produto_atual,caixa);
+                strcpy(caixa->codigo_entrega, codigo_atual);
+                caixa->prioridade = pedido_atual->dados->prioridade;
+
+                if(inserir_fila_caixas(caixa, fila_caixas) == NULL)
+                    return 0;
+
+                caixa = criar_caixa();
+
+                if(caixa == NULL)
+                    return 0;
             }
             else
             {
-                produto_atual = produto_atual->proximo;
-            }
+                if(inserir_na_caixa(produto_atual, caixa) == NULL)return 0;
 
-            if(produto_atual == NULL)
-            {
-                caixa->codigo_entrega = codigo_atual;
-                Caixa *nova_caixa = criar_caixa();
-                inserir_fila_caixas(caixa,fila_caixas);
-                caixa = nova_caixa;
-                pedido_atual = pedido_atual->proximo;
-                produto_atual = pedido_atual->lista->primeiro;               
+                quantidade_restante--;
             }
+        }
+
+        produto_atual = produto_atual->proximo;
+    }
+
+    if(caixa->topo != NULL)
+    {
+        strcpy(caixa->codigo_entrega, codigo_atual);
+        caixa->prioridade = pedido_atual->dados->prioridade;
+
+        if(inserir_fila_caixas(caixa, fila_caixas) == NULL)return 0;
+    }
+    else
+    {
+        free(caixa);
+    }
+
+    return 1;
+}
+
+void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas)
+{
+    if(fila_pedidos == NULL || fila_caixas == NULL)
+        return;
+
+    char codigo_atual[10];
+    int volume_maximo_caixa = 10;
+
+    while(fila_pedidos->cabeca != NULL)
+    {
+        No_fila *remover = fila_pedidos->cabeca;
+        No_pedidos *pedido_atual = remover->pedido;
+
+        strcpy(codigo_atual, pedido_atual->dados->codigo_entrega);
+
+        if(empacotar_pedido(pedido_atual, codigo_atual,volume_maximo_caixa, fila_caixas) == 0)
+        {
+            printf("Não foi possível concluir o empacotamento do pedido\n");
+            return;
+        }
+
+        pedido_atual->dados->empacotado = 1;
+
+        fila_pedidos->cabeca = remover->proximo;
+
+        if(fila_pedidos->cabeca == NULL)
+        {
+            fila_pedidos->cauda = NULL;
+        }
+
+        fila_pedidos->tamanho--;
+
+        free(remover);
+    }
+}
+
+void ver_caixas(Fila_caixas *fila_caixas)
+{
+    if(fila_caixas->cabeca == NULL)
+    {
+        printf("NÃO EXISTEM CAIXAS PARA EXPEDIÇÃO\n");
+        return;
+    }
+
+    No_caixa *atual = fila_caixas->cabeca;
+    No *produto_atual;
+
+    for(int i = 0; i < fila_caixas->tamanho; i++)
+    {
+        produto_atual = atual->caixa->topo;
+
+        printf("CAIXA %d\n", i + 1);
+        printf("Código de entrega: %s ||", atual->caixa->codigo_entrega);
+        printf("Prioridade: %d ||", atual->caixa->prioridade);
+        printf("Volume total: %d/10\n", atual->caixa->volume);
+
+        printf("PRODUTOS NA CAIXA:\n");
+
+        while(produto_atual != NULL)
+        {
+            printf("Código do produto: %d ||", produto_atual->codigo_produto);
+            printf("Quantidade: %d ||", produto_atual->quantidade);
+            printf("Volume: %d\n", produto_atual->volume);
+
+            produto_atual = produto_atual->proximo;
+        }
+
+        printf("\n\n");
+        atual = atual->proximo;
+    }
+
+    printf("Retornar?(s/n)\n");
+
+    while(1)
+    {
+        char resposta;
+        scanf(" %c", &resposta);
+
+        if(resposta == 's')
+        {
+            return;
+        }
+        else if(resposta == 'n')
+        {
+            break;
+        }
+        else
+        {
+            printf("\nRESPOSTA INVÁLIDA\n");
         }
     }
 }
