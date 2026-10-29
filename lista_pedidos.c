@@ -77,7 +77,7 @@ dados_pedido *registrar_dados(Codigos *codigos)
     while(1)
     {
         scanf("%d", &dados->prioridade);
-        if(dados->prioridade != 1 || dados->prioridade != 2 || dados->prioridade !=3)
+        if(dados->prioridade != 1 && dados->prioridade != 2 && dados->prioridade !=3)
         {
             printf("Opção inválida,digite novamente\n");
         }
