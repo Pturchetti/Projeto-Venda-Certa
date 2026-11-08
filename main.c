@@ -2,6 +2,7 @@
 #include "lista_pedidos.h"
 #include "fila_empacotamento.h"
 #include "geral_menu.h"
+#include "cadastro.h"
 
 int main(void) {
     int op;
@@ -10,6 +11,7 @@ int main(void) {
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
     Fila_Pedidos *fila_pedidos_empacotar = criar_fila();
     Fila_caixas *fila_caixas = criar_fila_caixas();
+    Catalogo *catalogo = criar_catalogo();
 
     if (lista_pedidos == NULL) {
         printf("Não foi possível criar a lista de pedidos.\n");
@@ -35,17 +37,17 @@ int main(void) {
 
         switch (op) {
             case 1:
-                cadastrar();
+                cadastrar(catalogo);
                 pausar();
                 break;
 
             case 2:
-                cadastrar_pedido(&codigos,lista_pedidos,fila_pedidos_empacotar);
+                cadastrar_pedido(&codigos,lista_pedidos,fila_pedidos_empacotar,catalogo);
                 pausar();
                 break;
 
             case 3:
-                produtos();
+                produtos(catalogo);
                 pausar();
                 break;
             

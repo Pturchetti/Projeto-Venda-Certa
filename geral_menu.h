@@ -9,9 +9,9 @@ void limpar_buffer(void);
 void limpar_tela(void);
 void pausar(void);
 
-void cadastrar(void);
-void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,Fila_Pedidos *fila);
-void produtos(void);
+void cadastrar(Catalogo *catalogo);
+void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,Fila_Pedidos *fila,Catalogo *catalogo);
+void produtos(Catalogo *Catalogo);
 void pedidos(ListaPedidos *lista_pedidos);
 
 #endif

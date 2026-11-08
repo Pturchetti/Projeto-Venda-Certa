@@ -1,7 +1,6 @@
 #ifndef LISTA_PRODUTOS_H
 #define LISTA_PRODUTOS_H
 #include "cadastro.h"
-#include "json_produtos.h"
 
 
 typedef struct codigos {
@@ -27,9 +26,9 @@ ListaProdutos *criar_lista_produtos();
 
 No *inserir_produtos(ListaProdutos *lista, Produto produto);
 
-Produto buscar_produto(Produto catalogo[], int tamanho);
 
-void ver_produtos(Produto catalogo[],int tamanho);
+void ver_produtos(No_catalogo *comeco);
 
-void modificar_produtos(Produto catalogo[],int tamanho);
+void modificar_produtos(Catalogo *catalogo);
+
 #endif

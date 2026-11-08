@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista_produtos.h"
-#include "json_produtos.h"
 #include "cadastro.h"
 #include "lista_pedidos.h"
 #include "fila_empacotamento.h"
@@ -21,13 +20,13 @@ void pausar() {
     limpar_tela();
 }
 
-void cadastrar() {
+void cadastrar(Catalogo *catalogo) {
     printf("Cadastrar produto...\n");
 
     int cadastro = 1;
     while(cadastro == 1)
     {
-        cadastrar_produto();
+        cadastrar_produto(catalogo);
         while(1)
         {
 
@@ -40,7 +39,7 @@ void cadastrar() {
             {
                 limpar_buffer();
                 break;
-            }
+            }   
             else if(resposta == 'n')
             {
                 cadastro = 0;
@@ -52,7 +51,8 @@ void cadastrar() {
     }
 }
 
-void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedidos *fila) {
+void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedidos *fila, Catalogo *catalogo)
+{
     printf("Cadastrar pedido...\n");
 
     ListaProdutos *lista = criar_lista_produtos();
@@ -62,26 +62,24 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         return;
     }
 
-    Produto *catalogo = NULL;
-    int tamanho_catalogo = 0;
-
-    if (!json_produtos_carregar("produtos.json", &catalogo, &tamanho_catalogo)) {
-        printf("Não foi possível carregar os produtos.\n");
-        free(lista);
-        return;
-    }
-
     int pedido = 1;
 
     while (pedido == 1) {
-        Produto produto = buscar_produto(catalogo, tamanho_catalogo);
-        
-        if(produto.codigo == -1)
+        printf("Digite o código do produto:\n");
+        Produto produto;
+        while(1)
         {
-            printf("INSERÇÃO DE PRODUTO CANCELADA!\n");
-            pedido = 0;
-            break;
+            int codigo;
+            scanf("%d", &codigo);
+            No_catalogo *comeco = catalogo->raiz;
+            produto = buscar_produto(comeco,codigo);
+            if(produto.codigo ==-1)
+            {
+                printf("Não existe um produto com esse código, digite novamente:\n");
+            }
+            else break;
         }
+        
 
         inserir_produtos(lista, produto);
 
@@ -101,8 +99,6 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
             }
         }
     }
-
-    free(catalogo);
 
     if(lista->tamanho == 0)
     {
@@ -135,7 +131,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
             if(dados->status == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
 
-            cadastrar_pedido(codigos, lista_pedidos,fila);
+            cadastrar_pedido(codigos, lista_pedidos,fila,catalogo);
             break;
         } else if (resposta == 'n') {
             inserir_lista_pedidos(lista, dados,lista_pedidos);
@@ -153,18 +149,9 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
 
 
-void produtos()
+void produtos(Catalogo *catalogo)
 {
-    Produto *catalogo = NULL;
-    int tamanho_catalogo = 0;
     int op;
-
-
-    if (!json_produtos_carregar("produtos.json", &catalogo, &tamanho_catalogo)) {
-        printf("Não foi possível carregar os produtos.\n");
-        return;
-    }
-
     do{
         printf("=== PRODUTOS ==\n\n");
         printf("1. Ver produtos\n");
@@ -177,15 +164,14 @@ void produtos()
         switch(op)
         {
             case 1:
-                ver_produtos(catalogo,tamanho_catalogo);
+                ver_produtos(catalogo->raiz);
                 pausar();
                 break;
             case 2:
-                modificar_produtos(catalogo,tamanho_catalogo);
+                modificar_produtos(catalogo);
                 pausar();
                 break;
             case 0:
-                free(catalogo);
                 return;
             default:
                 printf("Opcao invalida!\n");

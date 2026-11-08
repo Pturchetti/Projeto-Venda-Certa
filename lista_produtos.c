@@ -17,45 +17,6 @@ ListaProdutos *criar_lista_produtos()
 }
 
 
-Produto buscar_produto(Produto catalogo[], int tamanho)
-{
-    printf("QUANTIDADE DE PRODUTOS DIFERENTES NO CATÁLOGO:%d\n", tamanho);
-    while(1)
-    {
-        printf("DIGITE O CODIGO DO PRODUTO QUE QUER BUSCAR(1 a %d)\n",tamanho);
-
-        int codigo;
-        scanf("%d", &codigo);
-
-        for(int i = 0;i<tamanho;i++)
-        {
-            if(catalogo[i].codigo == codigo)
-            {
-                return catalogo[i];
-            }
-        }
-
-        printf("PRODUTO NÃO ENCONTRADO!\n");
-        while(1)
-        {
-            printf("DESEJA PROCURAR NOVAMENTE?(s/n)");
-            char resposta;
-            scanf(" %c",&resposta);
-
-            if(resposta== 's')
-            {
-                break;
-            }
-            else if(resposta == 'n')
-            {
-                Produto cancelado = {0};
-                cancelado.codigo = -1;
-                return cancelado;
-            }
-            else printf("RESPOSTA INVÁLIDA\n");
-        }
-    }
-}
 
 
 No *inserir_produtos(ListaProdutos *lista, Produto produto)
@@ -114,36 +75,30 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
 
 
 
-void ver_produtos(Produto catalogo[],int tamanho)
+void ver_produtos(No_catalogo *comeco)
 {
-    for(int i =0;i<tamanho;i++)
-    {
-        printf("Código: %d || Nome: %s || Volume: %d || Quantidade: %d\n",catalogo[i].codigo,catalogo[i].nome,catalogo[i].volume,catalogo[i].quantidade);
-    }
-    printf("Retornar?(s/n)\n");
-    while(1)
-    {
-        char resposta;
-        scanf(" %c", &resposta);
-        if(resposta == 's')
-        {
-            return;
-        }
-        else if(resposta == 'n')
-        {
-            break;
-        }
-        else printf("\nRESPOSTA INVÁLIDA\n");
-    }
+    if(comeco == NULL) return;
+    if(comeco->esquerda !=NULL) ver_produtos(comeco->esquerda);
+    printf("Código: %d || Nome: %s || quantidade: %d || Volume : %d\n",comeco->produto.codigo,comeco->produto.nome,comeco->produto.quantidade,comeco->produto.volume);
+
+    if(comeco->direita != NULL) ver_produtos(comeco->direita);
 }
 
-void modificar_produtos(Produto catalogo[], int tamanho)
+void modificar_produtos(Catalogo *catalogo)
 {
-    Produto produto = buscar_produto(catalogo, tamanho);
-    if(produto.codigo == -1)
+    printf("Digite o código do produto:\n");
+    Produto produto;
+    while(1)
     {
-        printf("MODIFICAÇÃO DE PRODUTO CANCELADA!\n");
-        return;
+        int codigo;
+        scanf("%d", &codigo);
+        No_catalogo *comeco = catalogo->raiz;
+        produto = buscar_produto(comeco,codigo);
+        if(produto.codigo ==-1)
+        {
+            printf("Não existe um produto com esse código, digite novamente:\n");
+        }
+        else break;
     }
 
     printf("DIGITE A NOVA QUANTIDADE DO PRODUTO:");
@@ -158,20 +113,24 @@ void modificar_produtos(Produto catalogo[], int tamanho)
         else break;
     }
 
-    for(int i = 0; i < tamanho; i++)
+
+    No_catalogo *atual = catalogo->raiz;
+
+    while(atual != NULL)
     {
-        if(produto.codigo == catalogo[i].codigo)
+        if(atual->produto.codigo == produto.codigo)
         {
-            catalogo[i].quantidade = nova_quantidade;
+            atual->produto.quantidade = nova_quantidade;
             break;
         }
+        else if(produto.codigo < atual->produto.codigo)
+        {
+            atual = atual->esquerda;
+        }
+        else
+        {
+            atual = atual->direita;
+        }
     }
-
-    if(!json_produtos_salvar("produtos.json", catalogo, tamanho))
-    {
-        printf("NÃO FOI POSSÍVEL SALVAR AS ALTERAÇÕES NO JSON.\n");
-        return;
-    }
-
     printf("PRODUTO ALTERADO COM SUCESSO!\n");
 }
