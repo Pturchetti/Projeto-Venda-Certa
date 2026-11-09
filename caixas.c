@@ -123,27 +123,26 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
 
         while(quantidade_restante > 0)
         {
-            if(caixa->volume + produto_atual->volume > volume_maximo_caixa)
+            No *inserir_produto = inserir_na_caixa(produto_atual, caixa);
+            if(inserir_produto == NULL) return 0;
+
+            quantidade_restante--;
+
+            if(caixa->volume > volume_maximo_caixa)
             {
+                desempilhar(caixa);
+                quantidade_restante++;
+
                 strcpy(caixa->codigo_entrega, codigo_atual);
                 caixa->prioridade = pedido_atual->dados->prioridade;
                 caixa->codigo_caixa = ++codigos->ultimo_codigo_caixa;
                 codigos->total_caixas++;
+
                 No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
-                if(inserir_fila == NULL)
-                    return 0;
+                if(inserir_fila == NULL) return 0;
 
                 caixa = criar_caixa();
-
-                if(caixa == NULL)
-                    return 0;
-            }
-            else
-            {
-                No *inserir_produto = inserir_na_caixa(produto_atual, caixa);
-                if(inserir_produto == NULL)return 0;
-
-                quantidade_restante--;
+                if(caixa == NULL) return 0;
             }
         }
 
@@ -259,4 +258,14 @@ void ver_caixas(Fila_caixas *fila_caixas, Codigos codigos)
             printf("\nRESPOSTA INVÁLIDA\n");
         }
     }
+}
+void desempilhar(Caixa *caixa)
+{
+    No *remover = caixa->topo;
+
+    caixa->topo = caixa->topo->proximo;
+    caixa->volume -= remover->volume;
+
+    free(remover);
+
 }

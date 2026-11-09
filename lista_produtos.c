@@ -50,7 +50,7 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
     scanf("%d", &quantidade);
     if(quantidade>produto.quantidade || quantidade<1)
     {
-        printf("QUANTIDADE INVÁLIDA, DIGITE NOVAMENTE:\n");
+        printf("QUANTIDADE INVÁLIDA OU SEM ESTOQUE, DIGITE NOVAMENTE:\n");
     }
     else break;
     }
@@ -74,63 +74,3 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
 }
 
 
-
-void ver_produtos(No_catalogo *comeco)
-{
-    if(comeco == NULL) return;
-    if(comeco->esquerda !=NULL) ver_produtos(comeco->esquerda);
-    printf("Código: %d || Nome: %s || quantidade: %d || Volume : %d\n",comeco->produto.codigo,comeco->produto.nome,comeco->produto.quantidade,comeco->produto.volume);
-
-    if(comeco->direita != NULL) ver_produtos(comeco->direita);
-}
-
-void modificar_produtos(Catalogo *catalogo)
-{
-    printf("Digite o código do produto:\n");
-    Produto produto;
-    while(1)
-    {
-        int codigo;
-        scanf("%d", &codigo);
-        No_catalogo *comeco = catalogo->raiz;
-        produto = buscar_produto(comeco,codigo);
-        if(produto.codigo ==-1)
-        {
-            printf("Não existe um produto com esse código, digite novamente:\n");
-        }
-        else break;
-    }
-
-    printf("DIGITE A NOVA QUANTIDADE DO PRODUTO:");
-    int nova_quantidade;
-    while(1)
-    {
-        scanf("%d", &nova_quantidade);
-        if(nova_quantidade < 0)
-        {
-            printf("QUANTIDADE INVÁLIDA, DIGITE NOVAMENTE\n");
-        }
-        else break;
-    }
-
-
-    No_catalogo *atual = catalogo->raiz;
-
-    while(atual != NULL)
-    {
-        if(atual->produto.codigo == produto.codigo)
-        {
-            atual->produto.quantidade = nova_quantidade;
-            break;
-        }
-        else if(produto.codigo < atual->produto.codigo)
-        {
-            atual = atual->esquerda;
-        }
-        else
-        {
-            atual = atual->direita;
-        }
-    }
-    printf("PRODUTO ALTERADO COM SUCESSO!\n");
-}

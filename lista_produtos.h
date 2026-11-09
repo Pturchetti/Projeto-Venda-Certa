@@ -29,8 +29,6 @@ ListaProdutos *criar_lista_produtos();
 No *inserir_produtos(ListaProdutos *lista, Produto produto);
 
 
-void ver_produtos(No_catalogo *comeco);
 
-void modificar_produtos(Catalogo *catalogo);
 
 #endif

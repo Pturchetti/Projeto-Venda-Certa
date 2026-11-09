@@ -91,5 +91,10 @@ void caminhoes(Fila_caixas *fila_caixas)
 
     fila_caixas->cabeca = NULL;
     fila_caixas->cauda = NULL;
-    printf("todas as caixas da fila de caixas foram para os caminhões, os caminhões saíram para entrega\n");
+
+    for(int i = 0;i<5;i++)
+    {
+        if(docas[i]<docas_original[i])printf("O caminhão número %d de capacidade máxima %d saiu com volume ocupado de %d\n",i+1,docas_original[i],docas_original[i]-docas[i]);
+    }
+    printf("todas as caixas da fila de caixas foram para os caminhões, os caminhões citados saíram para entrega\n");
 }

@@ -28,5 +28,13 @@ Catalogo *criar_catalogo();
 Produto buscar_produto(No_catalogo *atual, int codigo);
 No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo);
 
+void ver_produtos(No_catalogo *comeco);
+
+void modificar_produtos(Catalogo *catalogo);
+
+void remover_produto(Catalogo *catalago);
+void remover_folha(No_catalogo *atual, No_catalogo *anterior,Catalogo *catalago);
+void remover_pai_solo(No_catalogo *atual, No_catalogo *anterior,Catalogo *catalago);
+void remover_pai_dois_filhos(No_catalogo *atual, No_catalogo *anterior,Catalogo *catalago);
 
 #endif

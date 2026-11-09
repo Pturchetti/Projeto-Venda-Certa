@@ -31,4 +31,5 @@ No *inserir_na_caixa(No *produto_atual, Caixa *caixa);
 int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maximo_caixa, Fila_caixas *fila_caixas, Codigos *codigos);
 void empacotar(Fila_Pedidos *fila_pedidos,Fila_caixas *fila_caixas, Codigos *codigos);
 void ver_caixas(Fila_caixas *fila_caixas, Codigos codigos);
+void desempilhar(Caixa *caixa);
 #endif

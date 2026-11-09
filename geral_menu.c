@@ -156,6 +156,7 @@ void produtos(Catalogo *catalogo)
         printf("=== PRODUTOS ==\n\n");
         printf("1. Ver produtos\n");
         printf("2. Modificar produtos\n");
+        printf("3. Remover produtos\n");
         printf("0. Voltar\n");
 
         printf("Digite sua opção: ");
@@ -169,6 +170,10 @@ void produtos(Catalogo *catalogo)
                 break;
             case 2:
                 modificar_produtos(catalogo);
+                pausar();
+                break;
+            case 3:
+                remover_produto(catalogo);
                 pausar();
                 break;
             case 0:
