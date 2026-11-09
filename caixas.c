@@ -140,7 +140,6 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
             }
             else
             {
-                codigos->total_caixas++;
                 No *inserir_produto = inserir_na_caixa(produto_atual, caixa);
                 if(inserir_produto == NULL)return 0;
 
@@ -156,6 +155,7 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
         strcpy(caixa->codigo_entrega, codigo_atual);
         caixa->prioridade = pedido_atual->dados->prioridade;
         caixa->codigo_caixa = ++codigos->ultimo_codigo_caixa;
+        codigos->total_caixas++;
         No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
 
         if( inserir_fila == NULL)return 0;

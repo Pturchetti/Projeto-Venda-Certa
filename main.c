@@ -3,6 +3,7 @@
 #include "fila_empacotamento.h"
 #include "geral_menu.h"
 #include "cadastro.h"
+#include "caminhoes.h"
 
 int main(void) {
     int op;
@@ -29,6 +30,7 @@ int main(void) {
         printf("5. Ver fila\n");
         printf("6. Empacotar\n");
         printf("7. Ver caixas\n");
+        printf("8. Despachar\n");
         printf("0. Encerrar\n\n");
 
         printf("Informe sua opcao: ");
@@ -71,6 +73,11 @@ int main(void) {
 
             case 7:
                 ver_caixas(fila_caixas,codigos);
+                pausar();
+                break;
+
+            case 8:
+                caminhoes(fila_caixas);
                 pausar();
                 break;
             case 0:
