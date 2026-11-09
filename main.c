@@ -8,6 +8,8 @@ int main(void) {
     int op;
     Codigos codigos;
     codigos.ultimo_codigo_pedido = 0;
+    codigos.ultimo_codigo_caixa = 0;
+    codigos.total_caixas = 0;
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
     Fila_Pedidos *fila_pedidos_empacotar = criar_fila();
     Fila_caixas *fila_caixas = criar_fila_caixas();
@@ -62,13 +64,13 @@ int main(void) {
                 break;
 
             case 6:
-                empacotar(fila_pedidos_empacotar, fila_caixas);
+                empacotar(fila_pedidos_empacotar, fila_caixas,&codigos);
                 pausar();
                 break;
 
 
             case 7:
-                ver_caixas(fila_caixas);
+                ver_caixas(fila_caixas,codigos);
                 pausar();
                 break;
             case 0:

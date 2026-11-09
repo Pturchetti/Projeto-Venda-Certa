@@ -5,6 +5,7 @@
 
 typedef struct codigos {
     int ultimo_codigo_pedido;
+    int ultimo_codigo_caixa;
 } Codigos;
 
 

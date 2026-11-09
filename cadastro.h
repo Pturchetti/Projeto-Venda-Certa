@@ -1,11 +1,10 @@
 #ifndef CADASTRO_H
 #define CADASTRO_H
 
-#define PRODUTO_NOME_MAX 80
 
-typedef struct {
+typedef struct Produto{
     int codigo;
-    char nome[PRODUTO_NOME_MAX];
+    char nome[80];
     int volume;
     int quantidade;
 } Produto;
