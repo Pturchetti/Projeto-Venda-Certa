@@ -25,8 +25,9 @@ typedef struct Catalogo{
 void cadastrar_produto(Catalogo *catalogo);
 
 Catalogo *criar_catalogo();
-Produto buscar_produto(No_catalogo *atual, int codigo);
 No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo);
+Produto *buscar_produto(No_catalogo *atual, int codigo);
+
 
 void ver_produtos(No_catalogo *comeco);
 

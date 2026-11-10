@@ -8,7 +8,11 @@ Fila_caixas *criar_fila_caixas()
 {
     Fila_caixas *fila = (Fila_caixas*)malloc(sizeof(Fila_caixas));
 
-    if(fila == NULL) return NULL;
+    if(fila == NULL)
+    {
+        printf("Não foi possível criar a fila de caixas!\n");
+        return NULL;
+    }
 
     fila->cabeca = NULL;
     fila->cauda = NULL;
@@ -170,7 +174,10 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
 void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *codigos)
 {
     if(fila_pedidos == NULL || fila_caixas == NULL)
+    {
+        printf("Não foi possível acessar as filas para empacotar os pedidos!\n");
         return;
+    }
 
     char codigo_atual[10];
     int volume_maximo_caixa = 10;

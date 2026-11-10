@@ -19,18 +19,18 @@ ListaProdutos *criar_lista_produtos()
 
 
 
-No *inserir_produtos(ListaProdutos *lista, Produto produto)
+No *inserir_produtos(ListaProdutos *lista, Produto *produto)
 {
-    if(produto.quantidade == 0)
+    if(produto->quantidade == 0)
     {
         printf("PRODUTO SEM ESTOQUE!\n");
         return NULL;
     }
 
-    printf("\nCÓDIGO DO PRODUTO: %d\n", produto.codigo);
-    printf("\nNOME DO PRODUTO: %s\n", produto.nome);
-    printf("\nQUANTIDADE DISPONÍVEL DO PRODUTO: %d\n", produto.quantidade);
-    printf("\nVOLUME DO PRODUTO: %d\n", produto.volume);
+    printf("\nCódigo do produto: %d\n", produto->codigo);
+    printf("\nNome do produto: %s\n", produto->nome);
+    printf("\nQuantidade disponível do produto: %d\n", produto->quantidade);
+    printf("\nVolume do produto: %d\n", produto->volume);
 
     No *novo = (No*) malloc(sizeof(No));
 
@@ -40,22 +40,23 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
         return NULL;
     }
 
-    novo->codigo_produto = produto.codigo;
-    printf("DIGITE A QUANTIDADE QUE VOCÊ DESEJA:");
+    novo->codigo_produto = produto->codigo;
+    printf("Digite a quantidade que você deseja\n:");
     int quantidade;
     printf("\n");
 
     while(1)
     {
-    scanf("%d", &quantidade);
-    if(quantidade>produto.quantidade || quantidade<1)
-    {
-        printf("QUANTIDADE INVÁLIDA OU SEM ESTOQUE, DIGITE NOVAMENTE:\n");
+        scanf("%d", &quantidade);
+        if(quantidade>produto->quantidade || quantidade<1)
+        {
+            printf("Quantidade inválida ou sem estoque:\n");
+        }
+        else break;
     }
-    else break;
-    }
+    produto->quantidade-=quantidade;
     novo->quantidade = quantidade;
-    novo->volume = produto.volume;
+    novo->volume = produto->volume;
     novo->proximo = NULL;
 
     if(lista->primeiro == NULL)
@@ -73,4 +74,13 @@ No *inserir_produtos(ListaProdutos *lista, Produto produto)
     return novo;
 }
 
-
+int buscar_produto_pedido(ListaProdutos *lista, Produto *produto)
+{
+    No *atual = lista->primeiro;
+    for(int i =0;i<lista->tamanho;i++)
+    {
+        if(atual->codigo_produto == produto->codigo) return 1;
+        atual = atual->proximo;
+    }
+    return 0;
+}

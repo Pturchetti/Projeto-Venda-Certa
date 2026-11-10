@@ -2,8 +2,7 @@
 #ifndef FILA_PEDIDOS_H
 #define FILA_PEDIDOS_H
 
-#include "lista_pedidos.h"
-
+typedef struct No_pedidos No_pedidos;
 
 
 typedef struct No_fila{

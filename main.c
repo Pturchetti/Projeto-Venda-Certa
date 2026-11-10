@@ -11,6 +11,7 @@ int main(void) {
     codigos.ultimo_codigo_pedido = 0;
     codigos.ultimo_codigo_caixa = 0;
     codigos.total_caixas = 0;
+    codigos.codigo_pedido_modificar = -1;
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
     Fila_Pedidos *fila_pedidos_empacotar = criar_fila();
     Fila_caixas *fila_caixas = criar_fila_caixas();
@@ -56,7 +57,7 @@ int main(void) {
                 break;
             
             case 4:
-                pedidos(lista_pedidos);
+                pedidos(lista_pedidos, catalogo,fila_pedidos_empacotar);
                 pausar();
                 break;
 

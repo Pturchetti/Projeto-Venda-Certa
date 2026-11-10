@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,17 +13,26 @@ void limpar_b() {
 Catalogo *criar_catalogo()
 {
     Catalogo *catalogo = (Catalogo*) malloc(sizeof(Catalogo));
-    if(catalogo == NULL) return NULL;
+    if(catalogo == NULL)
+    {
+        printf("Não foi possível criar o catálogo!\n");
+        return NULL;
+    }
 
     catalogo->raiz = NULL;
     catalogo->tamanho = 0;
 
     return catalogo;
 }
+
 No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo)
 {
     No_catalogo *novo = (No_catalogo*)malloc(sizeof(No_catalogo));
-    if(novo == NULL) return NULL;
+    if(novo == NULL)
+    {
+        printf("Não foi possível cadastrar o produto!\n");
+        return NULL;
+    }
 
     novo->produto = produto;
     novo->direita = NULL;
@@ -75,17 +85,16 @@ No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo)
         return novo;
     }
 }
-Produto buscar_produto(No_catalogo *atual, int codigo)
+
+Produto *buscar_produto(No_catalogo *atual, int codigo)
 {
     if(atual == NULL)
     {
-        Produto produto = {0};
-        produto.codigo = -1;
-        return produto;
+        return NULL;
     }
     if(atual->produto.codigo == codigo)
     {
-        return atual->produto;
+        return &atual->produto;
     }
     if(atual->produto.codigo > codigo)
     {
@@ -106,8 +115,8 @@ void cadastrar_produto(Catalogo *catalogo)
         scanf("%d", &codigo);
         produto.codigo = codigo;
         No_catalogo *comeco = catalogo->raiz;
-        Produto busca = buscar_produto(comeco,codigo);
-        if(busca.codigo !=-1)
+        Produto *busca = buscar_produto(comeco,codigo);
+        if(busca != NULL)
         {
             printf("Já existe um produto com esse código, digite novamente:\n");
             limpar_b();
@@ -126,12 +135,12 @@ void cadastrar_produto(Catalogo *catalogo)
 
     printf("INSIRA O VOLUME DO PRODUTO:\n");
     scanf("%d",&produto.volume);
-    
+
     printf("\n");
 
     printf("INSIRA A QUANTIDADE DO PRODUTO:\n");
     scanf("%d",&produto.quantidade);
-    
+
     if(produto.volume<1 || produto.volume >10 || produto.quantidade<1)
     {
         printf("Volume ou quantidade errados!\n");
@@ -140,7 +149,6 @@ void cadastrar_produto(Catalogo *catalogo)
 
     inserir_no_catalogo(produto,catalogo);
 
-    
     limpar_b();
 }
 
@@ -156,14 +164,14 @@ void ver_produtos(No_catalogo *comeco)
 void modificar_produtos(Catalogo *catalogo)
 {
     printf("Digite o código do produto:\n");
-    Produto produto;
+    Produto *produto;
     while(1)
     {
         int codigo;
         scanf("%d", &codigo);
         No_catalogo *comeco = catalogo->raiz;
         produto = buscar_produto(comeco,codigo);
-        if(produto.codigo ==-1)
+        if(produto == NULL)
         {
             printf("Não existe um produto com esse código, digite novamente:\n");
         }
@@ -182,25 +190,8 @@ void modificar_produtos(Catalogo *catalogo)
         else break;
     }
 
+    produto->quantidade = nova_quantidade;
 
-    No_catalogo *atual = catalogo->raiz;
-
-    while(atual != NULL)
-    {
-        if(atual->produto.codigo == produto.codigo)
-        {
-            atual->produto.quantidade = nova_quantidade;
-            break;
-        }
-        else if(produto.codigo < atual->produto.codigo)
-        {
-            atual = atual->esquerda;
-        }
-        else
-        {
-            atual = atual->direita;
-        }
-    }
     printf("PRODUTO ALTERADO COM SUCESSO!\n");
 }
 
@@ -210,15 +201,15 @@ void remover_produto(Catalogo *catalogo)
     int codigo_produto;
     scanf("%d", &codigo_produto);
 
-    Produto produto;
+    Produto *produto;
     produto = buscar_produto(catalogo->raiz,codigo_produto);
 
-    if(produto.codigo == -1)
+    if(produto == NULL)
     {
         printf("produto não encontrado!\n");
         return;
     }
-    printf("deseja realmente remover o produto %s?(s/n)",produto.nome);
+    printf("deseja realmente remover o produto %s?(s/n)",produto->nome);
 
     while(1)
     {
@@ -231,9 +222,9 @@ void remover_produto(Catalogo *catalogo)
 
     No_catalogo *atual = catalogo->raiz;
     No_catalogo *anterior = NULL;
-    while(atual->produto.codigo != produto.codigo)
+    while(atual->produto.codigo != produto->codigo)
     {
-        if(produto.codigo>atual->produto.codigo)
+        if(produto->codigo>atual->produto.codigo)
         {
             anterior=atual;
             atual = atual->direita;
@@ -244,7 +235,7 @@ void remover_produto(Catalogo *catalogo)
             atual=atual->esquerda;
         }
     }
-    
+
 
     if(atual->esquerda == NULL && atual->direita == NULL)remover_folha(atual,anterior,catalogo);
 

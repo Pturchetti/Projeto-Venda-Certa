@@ -2,11 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fila_empacotamento.h"
+#include "lista_pedidos.h"
 
 Fila_Pedidos *criar_fila()
 {
     Fila_Pedidos *fila = (Fila_Pedidos*) malloc(sizeof(Fila_Pedidos));
-    if(fila == NULL) return NULL;
+    if(fila == NULL)
+    {
+        printf("Não foi possível criar a fila de empacotamento!\n");
+        return NULL;
+    }
 
     fila->cabeca = NULL;
     fila->cauda = NULL;
@@ -18,7 +23,11 @@ Fila_Pedidos *criar_fila()
 No_fila *inserir_fila_pedidos(No_pedidos *pedido,Fila_Pedidos *fila)
 {
     No_fila *novo = (No_fila*) malloc(sizeof(No_fila));
-    if(novo == NULL) return NULL;
+    if(novo == NULL)
+    {
+        printf("Não foi possível inserir o pedido na fila de empacotamento!\n");
+        return NULL;
+    }
 
 
     novo->proximo = NULL;

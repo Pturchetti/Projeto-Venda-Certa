@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lista_pedidos.h"
+#include "fila_empacotamento.h"
 
 void limpar() {
     int c;
@@ -144,5 +145,95 @@ void ver_pedidos(ListaPedidos *lista_pedidos)
             break;
         }
         else printf("\nRESPOSTA INVÁLIDA\n");
+    }
+}
+
+void modificar_pedidos(ListaProdutos *lista, Produto *produto)
+{
+    if(lista == NULL || produto == NULL)
+    {
+        printf("Não foi possível acessar os dados para modificar o pedido!\n");
+        return;
+    }
+
+    No *atual_produto = lista->primeiro;
+
+    while(atual_produto != NULL)
+    {
+        if(atual_produto->codigo_produto == produto->codigo) break;
+        atual_produto = atual_produto->proximo;
+    }
+
+    if(atual_produto == NULL)
+    {
+        printf("Produto não encontrado no pedido!\n");
+        return;
+    }
+
+    printf("Digite a nova quantidade:\n");
+
+    int nova_quantidade;
+
+    while(1)
+    {
+        scanf("%d", &nova_quantidade);
+
+        if(nova_quantidade < 1 || nova_quantidade > produto->quantidade + atual_produto->quantidade)
+        {
+            printf("Quantidade superior ao estoque ou insuficiente! Digite novamente\n");
+        }
+        else
+        {
+            produto->quantidade = produto->quantidade + atual_produto->quantidade - nova_quantidade;
+            atual_produto->quantidade = nova_quantidade;
+
+            printf("Quantidade do produto alterada com sucesso!\n");
+            break;
+        }
+    }
+}
+
+void fechar_pedidos(ListaPedidos *lista_pedidos,Fila_Pedidos *fila)
+{
+    No_pedidos *atual = lista_pedidos->primeiro;
+    int pedidos_abertos = 0;
+    while(atual != NULL)
+    {
+        if(atual->dados->status == 0)
+        {
+            pedidos_abertos++;
+            printf("Código entrega: %s || Código Pedido: %d || Prioridade: %d || Status: %d\n",atual->dados->codigo_entrega,atual->dados->codigo_pedido,atual->dados->prioridade,atual->dados->status);
+        }
+        atual = atual->proximo;
+    }
+
+    if(pedidos_abertos == 0)
+    {
+        printf("Não há pedidos em aberto\n");
+        return;
+    }
+    printf("Digite o código do pedido que deseja alterar, caso não deseje alterar nenhum digite -1:\n");
+    int resposta;
+    while(1)
+    {
+        scanf("%d", &resposta);
+        atual = lista_pedidos->primeiro;
+        while(atual !=NULL)
+        {
+            if(resposta == -1) return;
+            else if(atual->dados->codigo_pedido == resposta && atual->dados->status == 0)
+            {
+                atual->dados->status = 1;
+                if(inserir_fila_pedidos(atual, fila) == NULL)
+                {
+                    atual->dados->status = 0;
+                    printf("Não foi possível fechar o pedido!\n");
+                    return;
+                }
+                return;
+            }
+            atual = atual->proximo;
+        }
+        printf("Pedido não encontrado ou não existente, digite novamente:\n");
     }
 }

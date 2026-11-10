@@ -12,6 +12,7 @@ void pausar(void);
 void cadastrar(Catalogo *catalogo);
 void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,Fila_Pedidos *fila,Catalogo *catalogo);
 void produtos(Catalogo *Catalogo);
-void pedidos(ListaPedidos *lista_pedidos);
+void pedidos(ListaPedidos *lista_pedidos, Catalogo *catalogo,Fila_Pedidos *fila);
+void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo);
 
 #endif
