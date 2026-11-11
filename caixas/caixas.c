@@ -50,6 +50,7 @@ No *inserir_na_caixa(No *produto_atual, Caixa *caixa)
     }
 
     novo->codigo_produto = produto_atual->codigo_produto;
+    strcpy(novo->nome, produto_atual->nome);
     novo->quantidade = 1;
     novo->volume = produto_atual->volume;
 
@@ -180,7 +181,7 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
         return;
     }
 
-    char codigo_atual[10];
+    char codigo_atual[100];
     int volume_maximo_caixa = 10;
 
     while(fila_pedidos->cabeca != NULL)
@@ -209,6 +210,8 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
 
         free(remover);
     }
+
+    printf("Todas as caixas foram empacotadas!\n");
 }
 
 void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos)
@@ -221,11 +224,13 @@ void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos)
 
     No_caixa *atual = fila_caixas->cabeca;
     No *produto_atual;
+    No *produto_anterior;
     printf("TOTAL DE CAIXAS:%d\n",obter_total_caixas(codigos));
     for(int i = 0; i < fila_caixas->tamanho; i++)
     {
         produto_atual = atual->caixa->topo;
-
+        produto_anterior = NULL;
+        int quantidade = 1;
         printf("CAIXA %d\n", i + 1);
         printf("Código de entrega: %s ||", atual->caixa->codigo_entrega);
         printf("Prioridade: %d ||", atual->caixa->prioridade);
@@ -235,11 +240,32 @@ void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos)
 
         while(produto_atual != NULL)
         {
-            printf("Código do produto: %d ||", produto_atual->codigo_produto);
-            printf("Quantidade: %d ||", produto_atual->quantidade);
-            printf("Volume: %d\n", produto_atual->volume);
+            if(produto_anterior != NULL && produto_atual->codigo_produto == produto_anterior->codigo_produto)
+            {
+                quantidade++;
+            }
+            else
+            {
+                if(produto_anterior != NULL)
+                {
+                    printf("Código do produto: %d ||", produto_anterior->codigo_produto);
+                    printf("Nome: %s ||", produto_anterior->nome);
+                    printf("Quantidade: %d ||", quantidade);
+                    printf("Volume individual: %d\n", produto_anterior->volume);
+                }
+                quantidade = 1;
+            }
 
+            produto_anterior = produto_atual;
             produto_atual = produto_atual->proximo;
+        }
+
+        if(produto_anterior != NULL)
+        {
+            printf("Código do produto: %d ||", produto_anterior->codigo_produto);
+            printf("Nome: %s ||", produto_anterior->nome);
+            printf("Quantidade: %d ||", quantidade);
+            printf("Volume individual: %d\n", produto_anterior->volume);
         }
 
         printf("\n\n");

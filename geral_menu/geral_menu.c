@@ -64,10 +64,16 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
     int pedido = 1;
 
+
     while(pedido == 1)
     {
+
+        printf("Produtos Disponíveis:\n");
+        ver_produtos(raiz(catalogo));
+
         printf("Digite o código do produto:\n");
         Produto *produto;
+
 
         while(1)
         {
@@ -89,7 +95,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         }
         else inserir_produtos(lista,produto);
 
-        printf("DESEJA INSERIR MAIS PRODUTOS NO PEDIDO? (s/n)\n");
+        printf("Deseja inserir mais produtos no pedido? (s/n)\n");
 
         while(1)
         {
@@ -236,7 +242,7 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
 
     while(atual_produto != NULL)
     {
-        printf("Código produto:%d || quantidade produto: %d\n",atual_produto->codigo_produto,atual_produto->quantidade);
+        printf("Código produto:%d || Nome: %s || quantidade produto: %d\n",atual_produto->codigo_produto,atual_produto->nome,atual_produto->quantidade);
         atual_produto = atual_produto->proximo;
     }
 

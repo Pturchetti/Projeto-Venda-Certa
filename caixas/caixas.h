@@ -8,7 +8,7 @@
 
 typedef struct Caixa {
     int codigo_caixa;
-    char codigo_entrega[10];
+    char codigo_entrega[100];
     int volume;
     int prioridade;
     No *topo;

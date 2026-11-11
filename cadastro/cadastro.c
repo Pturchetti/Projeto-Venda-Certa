@@ -55,6 +55,7 @@ No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo)
     {
         catalogo->raiz = novo;
         catalogo->tamanho++;
+        printf("Produto cadastrado!\n");
         return novo;
     }
     else
@@ -94,6 +95,7 @@ No_catalogo *inserir_no_catalogo(Produto produto, Catalogo *catalogo)
             atual->esquerda = novo;
             catalogo->tamanho++;
         }
+        printf("Produto cadastrado!\n");
         return novo;
     }
 }

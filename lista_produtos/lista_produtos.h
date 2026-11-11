@@ -8,6 +8,7 @@
 typedef struct No{
     struct No *proximo;
     int codigo_produto;
+    char nome[80];
     int quantidade;
     int volume;
 }No;

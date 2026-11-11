@@ -23,7 +23,7 @@ No *inserir_produtos(ListaProdutos *lista, Produto *produto)
 {
     if(produto->quantidade == 0)
     {
-        printf("PRODUTO SEM ESTOQUE!\n");
+        printf("Produto sem estoque!\n");
         return NULL;
     }
 
@@ -36,11 +36,12 @@ No *inserir_produtos(ListaProdutos *lista, Produto *produto)
 
     if(novo == NULL)
     {
-        printf("OCORREU UM ERRO, TENTE NOVAMENTE MAIS TARDE!\n");
+        printf("Ocorreu um erro, tente novamente mais tarde!\n");
         return NULL;
     }
 
     novo->codigo_produto = produto->codigo;
+    strcpy(novo->nome, produto->nome);
     printf("Digite a quantidade que você deseja\n:");
     int quantidade;
     printf("\n");
