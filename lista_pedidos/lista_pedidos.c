@@ -9,6 +9,15 @@ void limpar() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+typedef struct dados_pedido{
+    int codigo_pedido;
+    char codigo_entrega[100];
+    int status;
+    int empacotado;
+    int prioridade;
+}dados_pedido;
+
+
 ListaPedidos *criar_lista_pedidos()
 {
     ListaPedidos *lista = (ListaPedidos*) malloc(sizeof(ListaPedidos));
@@ -63,12 +72,12 @@ dados_pedido *registrar_dados(Codigos *codigos)
     dados_pedido *dados = (dados_pedido*) malloc(sizeof(dados_pedido));
     if (dados == NULL) return NULL;
 
-    dados->codigo_pedido = ++codigos->ultimo_codigo_pedido;
+    dados->codigo_pedido = gerar_codigo_pedido(codigos);
     dados->empacotado = 0;
 
     printf("DIGITE O CÓDIGO DE ENTREGA: ");
     limpar();
-    fgets(dados->codigo_entrega,10,stdin);
+    fgets(dados->codigo_entrega,100,stdin);
 
 
     printf("Digite a prioridade do pedido\n");
@@ -236,4 +245,39 @@ void fechar_pedidos(ListaPedidos *lista_pedidos,Fila_Pedidos *fila)
         }
         printf("Pedido não encontrado ou não existente, digite novamente:\n");
     }
+}
+
+int consultar_codigo_pedido(dados_pedido *dados)
+{
+    return dados->codigo_pedido;
+}
+
+int consultar_prioridade_pedido(dados_pedido *dados)
+{
+    return dados->prioridade;
+}
+
+int consultar_status_pedido(dados_pedido *dados)
+{
+    return dados->status;
+}
+
+int consultar_empacotado_pedido(dados_pedido *dados)
+{
+    return dados->empacotado;
+}
+
+void alterar_status_pedido(dados_pedido *dados, int status)
+{
+    dados->status = status;
+}
+
+void alterar_empacotado_pedido(dados_pedido *dados, int empacotado)
+{
+    dados->empacotado = empacotado;
+}
+
+char *consultar_codigo_entrega(dados_pedido *dados)
+{
+    return dados->codigo_entrega;
 }

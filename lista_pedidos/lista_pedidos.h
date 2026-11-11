@@ -2,15 +2,11 @@
 #define LISTA_PEDIDOS_H
 
 #include "lista_produtos.h"
+#include "codigos.h"
+
 typedef struct Fila_Pedidos Fila_Pedidos;
 
-typedef struct dados_pedido{
-    int codigo_pedido;
-    char codigo_entrega[10];
-    int status;
-    int empacotado;
-    int prioridade;
-}dados_pedido;
+typedef struct dados_pedido dados_pedido;
 
 typedef struct No_pedidos{
     struct No_pedidos *proximo;
@@ -37,5 +33,14 @@ void ver_pedidos(ListaPedidos *lista_pedidos);
 void modificar_pedidos(ListaProdutos *lista, Produto *produto);
 
 void fechar_pedidos(ListaPedidos *lista_pedidos,Fila_Pedidos *fila);
+
+int consultar_codigo_pedido(dados_pedido *dados);
+int consultar_prioridade_pedido(dados_pedido *dados);
+int consultar_status_pedido(dados_pedido *dados);
+int consultar_empacotado_pedido(dados_pedido *dados);
+char *consultar_codigo_entrega(dados_pedido *dados);
+
+void alterar_status_pedido(dados_pedido *dados, int status);
+void alterar_empacotado_pedido(dados_pedido *dados, int empacotado);
 
 #endif

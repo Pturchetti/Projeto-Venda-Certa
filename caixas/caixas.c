@@ -138,9 +138,9 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
                 quantidade_restante++;
 
                 strcpy(caixa->codigo_entrega, codigo_atual);
-                caixa->prioridade = pedido_atual->dados->prioridade;
-                caixa->codigo_caixa = ++codigos->ultimo_codigo_caixa;
-                codigos->total_caixas++;
+                caixa->prioridade = consultar_prioridade_pedido(pedido_atual->dados);
+                caixa->codigo_caixa = gerar_codigo_caixa(codigos);
+                incrementar_total_caixas(codigos);
 
                 No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
                 if(inserir_fila == NULL) return 0;
@@ -156,9 +156,10 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
     if(caixa->topo != NULL)
     {
         strcpy(caixa->codigo_entrega, codigo_atual);
-        caixa->prioridade = pedido_atual->dados->prioridade;
-        caixa->codigo_caixa = ++codigos->ultimo_codigo_caixa;
-        codigos->total_caixas++;
+        caixa->prioridade = consultar_prioridade_pedido(pedido_atual->dados);
+        caixa->codigo_caixa = gerar_codigo_caixa(codigos);
+        incrementar_total_caixas(codigos);
+
         No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
 
         if( inserir_fila == NULL)return 0;
@@ -187,7 +188,7 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
         No_fila *remover = fila_pedidos->cabeca;
         No_pedidos *pedido_atual = remover->pedido;
 
-        strcpy(codigo_atual, pedido_atual->dados->codigo_entrega);
+        strcpy(codigo_atual, consultar_codigo_entrega(pedido_atual->dados));
         int empacotado = empacotar_pedido(pedido_atual, codigo_atual,volume_maximo_caixa, fila_caixas,codigos);
         if( empacotado == 0)
         {
@@ -195,7 +196,7 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
             return;
         }
 
-        pedido_atual->dados->empacotado = 1;
+        alterar_empacotado_pedido(pedido_atual->dados,1);
 
         fila_pedidos->cabeca = remover->proximo;
 
@@ -210,7 +211,7 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
     }
 }
 
-void ver_caixas(Fila_caixas *fila_caixas, Codigos codigos)
+void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos)
 {
     if(fila_caixas->cabeca == NULL)
     {
@@ -220,7 +221,7 @@ void ver_caixas(Fila_caixas *fila_caixas, Codigos codigos)
 
     No_caixa *atual = fila_caixas->cabeca;
     No *produto_atual;
-    printf("TOTAL DE CAIXAS:%d\n",codigos.total_caixas);
+    printf("TOTAL DE CAIXAS:%d\n",obter_total_caixas(codigos));
     for(int i = 0; i < fila_caixas->tamanho; i++)
     {
         produto_atual = atual->caixa->topo;

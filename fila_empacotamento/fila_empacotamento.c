@@ -62,7 +62,7 @@ void ver_fila(Fila_Pedidos *fila)
 
     for(int i = 0;i<fila->tamanho;i++)
     {
-        printf("Pedido Número:%d\n",atual->pedido->dados->codigo_pedido);
+        printf("Pedido Número:%d\n",consultar_codigo_pedido(atual->pedido->dados));
         atual = atual->proximo;
     }
 }

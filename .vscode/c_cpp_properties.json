@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "compilerPath": "/usr/bin/gcc",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/cadastro",
+                "${workspaceFolder}/lista_produtos",
+                "${workspaceFolder}/lista_pedidos",
+                "${workspaceFolder}/fila_empacotamento",
+                "${workspaceFolder}/caixas",
+                "${workspaceFolder}/caminhoes",
+                "${workspaceFolder}/geral_menu",
+                "${workspaceFolder}/codigos"
+            ],
+            "cStandard": "c11",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

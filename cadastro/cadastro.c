@@ -10,6 +10,18 @@ void limpar_b() {
 }
 
 
+typedef struct No_catalogo{
+    Produto produto;
+    struct No_catalogo *esquerda;
+    struct No_catalogo *direita;
+} No_catalogo;
+
+typedef struct Catalogo{
+    No_catalogo *raiz;
+    int tamanho;
+} Catalogo;
+
+
 Catalogo *criar_catalogo()
 {
     Catalogo *catalogo = (Catalogo*) malloc(sizeof(Catalogo));
@@ -307,4 +319,10 @@ void remover_pai_dois_filhos(No_catalogo *atual, No_catalogo *anterior,Catalogo 
 
     if(atual->direita == NULL) remover_folha(atual,anterior,catalago);
     else remover_pai_solo(atual,anterior,catalago);
+}
+
+
+No_catalogo *raiz(Catalogo *catalogo)
+{
+    return catalogo->raiz;
 }

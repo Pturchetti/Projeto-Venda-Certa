@@ -1,34 +1,20 @@
-
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11
-OBJETOS = main.o cadastro.o lista_produtos.o lista_pedidos.o fila_empacotamento.o geral_menu.o caixas.o caminhoes.o
+MODULOS = cadastro lista_produtos lista_pedidos fila_empacotamento caixas caminhoes geral_menu codigos
+CPPFLAGS += $(addprefix -I,$(MODULOS))
+FONTES = main.c $(foreach modulo,$(MODULOS),$(modulo)/$(modulo).c)
+OBJETOS = $(FONTES:.c=.o)
+DEPENDENCIAS = $(OBJETOS:.o=.d)
 
 venda_certa: $(OBJETOS)
-	$(CC) $(CFLAGS) -o venda_certa $(OBJETOS)
+	$(CC) $(CFLAGS) -o $@ $(OBJETOS)
 
-main.o: main.c geral_menu.h lista_pedidos.h fila_empacotamento.h caixas.h lista_produtos.h cadastro.h caminhoes.h
-	$(CC) $(CFLAGS) -c main.c
-
-cadastro.o: cadastro.c cadastro.h
-	$(CC) $(CFLAGS) -c cadastro.c
-
-lista_produtos.o: lista_produtos.c lista_produtos.h cadastro.h
-	$(CC) $(CFLAGS) -c lista_produtos.c
-
-lista_pedidos.o: lista_pedidos.c lista_pedidos.h lista_produtos.h cadastro.h
-	$(CC) $(CFLAGS) -c lista_pedidos.c
-
-fila_empacotamento.o: fila_empacotamento.c fila_empacotamento.h lista_pedidos.h lista_produtos.h cadastro.h
-	$(CC) $(CFLAGS) -c fila_empacotamento.c
-
-geral_menu.o: geral_menu.c geral_menu.h lista_produtos.h cadastro.h lista_pedidos.h fila_empacotamento.h caixas.h
-	$(CC) $(CFLAGS) -c geral_menu.c
-
-caixas.o: caixas.c caixas.h lista_produtos.h lista_pedidos.h fila_empacotamento.h cadastro.h
-	$(CC) $(CFLAGS) -c caixas.c
-
-caminhoes.o: caminhoes.c caminhoes.h caixas.h
-	$(CC) $(CFLAGS) -c caminhoes.c
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
 
 clean:
-	rm -f $(OBJETOS) venda_certa
+	rm -f $(OBJETOS) $(DEPENDENCIAS) venda_certa
+
+-include $(DEPENDENCIAS)
+
+.PHONY: clean

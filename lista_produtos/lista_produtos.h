@@ -2,12 +2,6 @@
 #define LISTA_PRODUTOS_H
 #include "cadastro.h"
 
-typedef struct codigos {
-    int ultimo_codigo_pedido;
-    int ultimo_codigo_caixa;
-    int codigo_pedido_modificar;
-    int total_caixas;
-} Codigos;
 
 
 

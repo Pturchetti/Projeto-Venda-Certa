@@ -73,7 +73,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         {
             int codigo;
             scanf("%d", &codigo);
-            No_catalogo *comeco = catalogo->raiz;
+            No_catalogo *comeco = raiz(catalogo);
             produto = buscar_produto(comeco,codigo);
 
             if(produto == NULL)
@@ -146,7 +146,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         {
             inserir_lista_pedidos(lista,dados,lista_pedidos);
 
-            if(dados->status == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+            if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
 
             cadastrar_pedido(codigos,lista_pedidos,fila,catalogo);
             break;
@@ -155,7 +155,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         {
             inserir_lista_pedidos(lista,dados,lista_pedidos);
 
-            if(dados->status == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+            if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
 
             break;
         }
@@ -184,7 +184,7 @@ void produtos(Catalogo *catalogo)
         switch(op)
         {
             case 1:
-                ver_produtos(catalogo->raiz);
+                ver_produtos(raiz(catalogo));
                 pausar();
                 break;
             case 2:
@@ -216,7 +216,7 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
 
     while(atual != NULL)
     {
-        if(atual->dados->codigo_pedido == codigo) break;
+        if(consultar_codigo_pedido(atual->dados) == codigo) break;
         atual = atual->proximo;
     }
 
@@ -226,7 +226,7 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
         return;
     }
 
-    if(atual->dados->status == 1 || atual->dados->empacotado == 1)
+    if(consultar_status_pedido(atual->dados) == 1 || consultar_empacotado_pedido(atual->dados) == 1)
     {
         printf("Não é possível modificar um pedido fechado ou já empacotado!\n");
         return;
@@ -259,7 +259,7 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
         return;
     }
 
-    Produto *produto = buscar_produto(catalogo->raiz,codigo_produto);
+    Produto *produto = buscar_produto(raiz(catalogo),codigo_produto);
 
     if(produto == NULL)
     {

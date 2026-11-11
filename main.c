@@ -7,11 +7,9 @@
 
 int main(void) {
     int op;
-    Codigos codigos;
-    codigos.ultimo_codigo_pedido = 0;
-    codigos.ultimo_codigo_caixa = 0;
-    codigos.total_caixas = 0;
-    codigos.codigo_pedido_modificar = -1;
+
+    Codigos *codigos = criar_codigos();
+    if(codigos == NULL) return 1;
     ListaPedidos *lista_pedidos = criar_lista_pedidos();
     Fila_Pedidos *fila_pedidos_empacotar = criar_fila();
     Fila_caixas *fila_caixas = criar_fila_caixas();
@@ -47,7 +45,7 @@ int main(void) {
                 break;
 
             case 2:
-                cadastrar_pedido(&codigos,lista_pedidos,fila_pedidos_empacotar,catalogo);
+                cadastrar_pedido(codigos,lista_pedidos,fila_pedidos_empacotar,catalogo);
                 pausar();
                 break;
 
@@ -67,7 +65,7 @@ int main(void) {
                 break;
 
             case 6:
-                empacotar(fila_pedidos_empacotar, fila_caixas,&codigos);
+                empacotar(fila_pedidos_empacotar, fila_caixas,codigos);
                 pausar();
                 break;
 

@@ -4,6 +4,7 @@
 #include "lista_pedidos.h"
 #include "fila_empacotamento.h"
 #include "lista_produtos.h"
+#include "codigos.h"
 
 typedef struct Caixa {
     int codigo_caixa;
@@ -30,6 +31,6 @@ No_caixa *inserir_fila_caixas(Caixa *caixa, Fila_caixas *fila_caixas);
 No *inserir_na_caixa(No *produto_atual, Caixa *caixa);
 int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maximo_caixa, Fila_caixas *fila_caixas, Codigos *codigos);
 void empacotar(Fila_Pedidos *fila_pedidos,Fila_caixas *fila_caixas, Codigos *codigos);
-void ver_caixas(Fila_caixas *fila_caixas, Codigos codigos);
+void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos);
 void desempilhar(Caixa *caixa);
 #endif
