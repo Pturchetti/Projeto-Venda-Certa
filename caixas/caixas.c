@@ -231,7 +231,7 @@ void ver_caixas(Fila_caixas *fila_caixas, Codigos *codigos)
         produto_atual = atual->caixa->topo;
         produto_anterior = NULL;
         int quantidade = 1;
-        printf("CAIXA %d\n", i + 1);
+        printf("CAIXA %d\n", atual->caixa->codigo_caixa);
         printf("Código de entrega: %s ||", atual->caixa->codigo_entrega);
         printf("Prioridade: %d ||", atual->caixa->prioridade);
         printf("Volume total: %d/10\n", atual->caixa->volume);
