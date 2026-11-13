@@ -47,6 +47,16 @@ void remover_caixa(Fila_caixas *fila_caixas)
 void caminhoes(Fila_caixas *fila_caixas)
 {
 
+    if(fila_caixas == NULL)
+    {
+        printf("Não foi possível acessar a fila de caixas!\n");
+        return;
+    }
+    if(fila_caixas->cabeca == NULL)
+    {
+        printf("Ainda não existem caixas para serem empacotadas!\n");
+        return;
+    }
     int docas[5] = {0};
     int docas_original[5] = {0};
     sorteio_caminhoes(docas,docas_original);

@@ -181,6 +181,12 @@ void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *co
         return;
     }
 
+    if(fila_pedidos->cabeca == NULL)
+    {
+        printf("Ainda não existem pedidos a serem empacotados!\n");
+        return;
+    }
+
     char codigo_atual[100];
     int volume_maximo_caixa = 10;
 
