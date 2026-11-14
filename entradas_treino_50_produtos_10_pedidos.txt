@@ -1,0 +1,511 @@
+1
+1
+Caderno universitário
+2
+40
+s
+2
+Caneta azul
+1
+50
+s
+3
+Lápis de desenho
+1
+60
+s
+4
+Estojo escolar
+2
+70
+s
+5
+Mochila escolar
+6
+80
+s
+6
+Agenda semanal
+2
+30
+s
+7
+Marcador de texto
+1
+40
+s
+8
+Bloco de notas
+1
+50
+s
+9
+Calculadora científica
+2
+60
+s
+10
+Livro de programação em C
+3
+70
+s
+11
+Mouse sem fio
+2
+80
+s
+12
+Teclado compacto
+4
+30
+s
+13
+Fone de ouvido
+3
+40
+s
+14
+Caixa de som portátil
+4
+50
+s
+15
+Carregador USB
+1
+60
+s
+16
+Cabo USB-C
+1
+70
+s
+17
+Suporte para notebook
+5
+80
+s
+18
+Webcam
+2
+30
+s
+19
+Pendrive de 64 GB
+1
+40
+s
+20
+Hub USB
+2
+50
+s
+21
+Garrafa térmica
+3
+60
+s
+22
+Caneca de cerâmica
+2
+70
+s
+23
+Pote de vidro
+3
+80
+s
+24
+Jogo de talheres
+2
+30
+s
+25
+Frigideira
+5
+40
+s
+26
+Panela de pressão
+8
+50
+s
+27
+Cafeteira elétrica
+10
+60
+s
+28
+Sanduicheira
+7
+70
+s
+29
+Balança de cozinha
+3
+80
+s
+30
+Tábua de corte
+4
+30
+s
+31
+Toalha de banho
+3
+40
+s
+32
+Almofada decorativa
+5
+50
+s
+33
+Luminária de mesa
+6
+60
+s
+34
+Organizador de gaveta
+4
+70
+s
+35
+Relógio de parede
+4
+80
+s
+36
+Porta-retrato
+2
+30
+s
+37
+Vaso decorativo
+5
+40
+s
+38
+Cobertor de solteiro
+8
+50
+s
+39
+Jogo de lençóis
+6
+60
+s
+40
+Ventilador de mesa
+10
+70
+s
+41
+Bola de futebol
+5
+80
+s
+42
+Corda de pular
+1
+30
+s
+43
+Tapete de exercícios
+7
+40
+s
+44
+Par de halteres
+9
+50
+s
+45
+Boné esportivo
+2
+60
+s
+46
+Luvas de academia
+1
+70
+s
+47
+Kit de ferramentas
+6
+80
+s
+48
+Trena de cinco metros
+2
+30
+s
+49
+Lanterna recarregável
+3
+40
+s
+50
+Guarda-chuva
+4
+50
+n
+2
+1
+2
+n
+TREINO-001 - Porto Alegre
+3
+s
+n
+2
+10
+3
+s
+17
+1
+s
+24
+2
+n
+TREINO-002 - Caxias do Sul
+1
+n
+n
+2
+19
+1
+s
+26
+2
+s
+33
+3
+s
+40
+1
+s
+47
+2
+s
+19
+3
+s
+47
+1
+n
+TREINO-003 - Pelotas
+2
+s
+n
+2
+28
+2
+s
+35
+3
+s
+42
+1
+s
+49
+2
+s
+6
+3
+s
+13
+1
+s
+20
+2
+s
+27
+3
+n
+TREINO-004 - Santa Maria
+1
+s
+n
+2
+37
+3
+s
+44
+1
+s
+1
+2
+s
+8
+3
+s
+15
+1
+s
+22
+2
+s
+29
+3
+s
+36
+1
+s
+43
+2
+s
+50
+3
+n
+TREINO-005 - Canoas
+3
+n
+n
+2
+46
+1
+s
+3
+2
+n
+TREINO-006 - Novo Hamburgo
+2
+s
+n
+2
+5
+2
+s
+12
+3
+s
+19
+1
+s
+26
+2
+n
+TREINO-007 - Gramado
+3
+n
+n
+2
+14
+3
+s
+21
+1
+s
+28
+2
+s
+35
+3
+s
+42
+1
+s
+49
+2
+s
+14
+5
+s
+49
+1
+n
+TREINO-008 - Bento Gonçalves
+1
+s
+n
+2
+23
+1
+s
+30
+2
+s
+37
+3
+s
+44
+1
+s
+1
+2
+s
+8
+3
+s
+15
+1
+s
+22
+2
+s
+29
+3
+n
+TREINO-009 - Passo Fundo
+2
+s
+n
+2
+32
+2
+s
+39
+3
+s
+46
+1
+s
+3
+2
+s
+10
+3
+s
+17
+1
+s
+24
+2
+s
+31
+3
+s
+38
+1
+s
+45
+2
+s
+2
+3
+s
+9
+1
+s
+32
+4
+s
+9
+1
+n
+TREINO-010 - Rio Grande
+1
+n
+n
+3
+1
+
+0
+
+4
+1
+s
+0
+
+5
+

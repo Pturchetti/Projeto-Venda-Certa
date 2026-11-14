@@ -64,12 +64,11 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
     int pedido = 1;
 
-
+    printf("Produtos Disponíveis:\n");
+    ver_produtos(raiz(catalogo));
     while(pedido == 1)
     {
 
-        printf("Produtos Disponíveis:\n");
-        ver_produtos(raiz(catalogo));
 
         printf("Digite o código do produto:\n");
         Produto *produto;

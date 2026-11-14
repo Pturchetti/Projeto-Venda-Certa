@@ -141,18 +141,18 @@ void cadastrar_produto(Catalogo *catalogo)
     limpar_b();
     printf("\n");
 
-    printf("INSIRA O NOME DO PRODUTO:\n");
+    printf("Insira o nome do produto:\n");
     fgets(produto.nome,sizeof(produto.nome),stdin);
     produto.nome[strcspn(produto.nome, "\n")] = '\0';
 
     printf("\n");
 
-    printf("INSIRA O VOLUME DO PRODUTO:\n");
+    printf("Insira o volume do produto:\n");
     scanf("%d",&produto.volume);
 
     printf("\n");
 
-    printf("INSIRA A QUANTIDADE DO PRODUTO:\n");
+    printf("Insira a quantidade do produto:\n");
     scanf("%d",&produto.quantidade);
 
     if(produto.volume<1 || produto.volume >10 || produto.quantidade<1)
