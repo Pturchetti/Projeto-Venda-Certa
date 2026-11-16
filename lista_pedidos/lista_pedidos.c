@@ -122,9 +122,9 @@ void ver_pedidos(ListaPedidos *lista_pedidos)
     {
         produto_atual = atual->lista->primeiro;
 
-        printf("Código de entrega: %s || Código do pedido: %d ||",atual->dados->codigo_entrega,atual->dados->codigo_pedido);
-        if(atual->dados->status == 1)printf("FECHADO\n");
-        else printf("EM ABERTO\n");
+        printf("Código de entrega: %s Código do pedido: %d ||",atual->dados->codigo_entrega,atual->dados->codigo_pedido);
+        if(atual->dados->status == 1)printf("FECHADO ||");
+        else printf("EM ABERTO ||");
 
         if(atual->dados->empacotado == 1)printf("EMPACOTADO\n");
         else printf("NÃO EMPACOTADO\n");

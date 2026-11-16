@@ -6,7 +6,6 @@
 struct codigos {
     int ultimo_codigo_pedido;
     int ultimo_codigo_caixa;
-    int codigo_pedido_modificar;
     int total_caixas;
 };
 
@@ -21,7 +20,6 @@ Codigos *criar_codigos()
 
     codigos->ultimo_codigo_pedido = 0;
     codigos->ultimo_codigo_caixa = 0;
-    codigos->codigo_pedido_modificar = -1;
     codigos->total_caixas = 0;
 
     return codigos;
@@ -59,13 +57,4 @@ void incrementar_total_caixas(Codigos *codigos)
     codigos->total_caixas++;
 }
 
-int obter_codigo_pedido_modificar(Codigos *codigos)
-{
-    return codigos->codigo_pedido_modificar;
-}
-
-void alterar_codigo_pedido(Codigos *codigos, int codigo)
-{
-    codigos->codigo_pedido_modificar = codigo;
-}
 
