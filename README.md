@@ -17,10 +17,12 @@ make
 
 Para executar o programa com os dados de treinamento (50 produtos e 10 pedidos) e continuar utilizando o menu interativamente:
 ```bash
-{ cat entradas_treino_50_produtos_10_pedidos.txt; cat; } | ./venda_certa
+{ cat entradas_treino_50_produtos_10_pedidos.txt; cat; } | stdbuf -o0 ./venda_certa
 ```
 
 O primeiro `cat` fornece os dados de treinamento ao programa. O segundo permite continuar digitando comandos normalmente após o cadastro automático.
+
+O `stdbuf -o0` faz as mensagens aparecerem imediatamente, evitando que os avisos para digitar uma opção fiquem retidos no buffer de saída.
 
 Para executar o programa sem os dados de treinamento:
 ```
