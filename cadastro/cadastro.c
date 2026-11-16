@@ -192,14 +192,52 @@ void modificar_produtos(Catalogo *catalogo)
         else break;
     }
 
-    printf("DIGITE A NOVA QUANTIDADE DO PRODUTO:");
+
+    limpar_b();
+    printf("Digite o novo nome do produto, caso não queira, aperte ENTER\n");
+
+    char novo_nome[80];
+
+    while(1)
+    {
+        if(fgets(novo_nome, sizeof(novo_nome), stdin) == NULL)
+        {
+            printf("Não foi possível ler o nome do produto!\n");
+            return;
+        }
+
+        if(novo_nome[0] == '\n')
+        {
+            break;
+        }
+        else if(strchr(novo_nome, '\n') == NULL)
+        {
+            int caractere = getchar();
+            if(caractere == '\n' || caractere == EOF)
+            {
+                strcpy(produto->nome, novo_nome);
+                break;
+            }
+            while((caractere = getchar()) != '\n' && caractere != EOF);
+
+            printf("Nome inválido, digite novamente:\n");
+        }
+        else
+        {
+            novo_nome[strcspn(novo_nome, "\n")] = '\0';
+            strcpy(produto->nome, novo_nome);
+            break;
+        }
+    }
+
+    printf("Digite a nova quantidade do produto:");
     int nova_quantidade;
     while(1)
     {
         scanf("%d", &nova_quantidade);
         if(nova_quantidade < 0)
         {
-            printf("QUANTIDADE INVÁLIDA, DIGITE NOVAMENTE\n");
+            printf("Quantidade inválida, digite novamente\n");
         }
         else break;
     }

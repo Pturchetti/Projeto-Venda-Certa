@@ -34,6 +34,11 @@ void modificar_pedidos(ListaProdutos *lista, Produto *produto);
 
 void fechar_pedidos(ListaPedidos *lista_pedidos,Fila_Pedidos *fila);
 
+void remover_produto_pedido(ListaProdutos *lista,No *produto_atual, Produto *Produto_arvore);
+
+void remover_pedido(No_pedidos *pedido, ListaPedidos *lista_pedidos, Catalogo *catalogo);
+
+
 int consultar_codigo_pedido(dados_pedido *dados);
 int consultar_prioridade_pedido(dados_pedido *dados);
 int consultar_status_pedido(dados_pedido *dados);

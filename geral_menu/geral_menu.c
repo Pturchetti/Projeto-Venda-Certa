@@ -149,7 +149,11 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
         if(resposta == 's')
         {
-            inserir_lista_pedidos(lista,dados,lista_pedidos);
+            if(inserir_lista_pedidos(lista,dados,lista_pedidos) == NULL)
+            {
+                printf("Não foi possível inserir o pedido!\n");
+                return;
+            }
 
             if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
 
@@ -158,7 +162,11 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         }
         else if(resposta == 'n')
         {
-            inserir_lista_pedidos(lista,dados,lista_pedidos);
+            if(inserir_lista_pedidos(lista,dados,lista_pedidos) == NULL)
+            {
+                printf("Não foi possível inserir o pedido!\n");
+                return;
+            }
 
             if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
 
@@ -176,7 +184,7 @@ void produtos(Catalogo *catalogo)
     int op;
     do
     {
-        printf("=== PRODUTOS ==\n\n");
+        printf("=== PRODUTOS ===\n\n");
         printf("1. Ver produtos\n");
         printf("2. Modificar produtos\n");
         printf("3. Remover produtos\n");
@@ -245,7 +253,7 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
         atual_produto = atual_produto->proximo;
     }
 
-    printf("Digite o código do produto que deseja alterar a quantidade:\n");
+    printf("Digite o código do produto que deseja alterar:\n");
 
     int codigo_produto;
     scanf("%d", &codigo_produto);
@@ -273,6 +281,51 @@ void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo
     }
 
     modificar_pedidos(atual->lista,produto);
+
+    if(atual->lista->tamanho == 0)
+    {
+        remover_pedido(atual,lista_pedidos,catalogo);
+    }
+}
+
+void selecionar_pedido_remover(ListaPedidos *lista_pedidos,Catalogo *catalogo)
+{
+    if(lista_pedidos->primeiro == NULL)
+    {
+        printf("Não existe ainda uma lista de pedidos\n");
+        return;
+    }
+    printf("Digite o codigo do pedido que deseja remover:\n");
+
+    int codigo;
+    if(scanf("%d", &codigo) != 1)
+    {
+        limpar_buffer();
+        printf("Código de pedido inválido!\n");
+        return;
+    }
+    limpar_buffer();
+    No_pedidos *atual = lista_pedidos->primeiro;
+
+    while(atual != NULL)
+    {
+        if(consultar_codigo_pedido(atual->dados) == codigo) break;
+        atual = atual->proximo;
+    }
+
+    if(atual == NULL)
+    {
+        printf("Não existe um pedido com esse código!\n");
+        return;
+    }
+
+    if(consultar_status_pedido(atual->dados) != 0 || consultar_empacotado_pedido(atual->dados) != 0)
+    {
+        printf("Não é possível remover um pedido fechado ou já empacotado!\n");
+        return;
+    }
+
+    remover_pedido(atual,lista_pedidos,catalogo);
 }
 
 void pedidos(ListaPedidos *lista_pedidos, Catalogo *catalogo,Fila_Pedidos *fila)
@@ -287,10 +340,11 @@ void pedidos(ListaPedidos *lista_pedidos, Catalogo *catalogo,Fila_Pedidos *fila)
 
     do
     {
-        printf("=== PEDIDOS ==\n\n");
+        printf("=== PEDIDOS ===\n\n");
         printf("1. Ver pedidos\n");
         printf("2. Modificar pedidos\n");
         printf("3. Fechar Pedidos\n");
+        printf("4. Remover Pedido\n");
         printf("0. Voltar\n");
 
         printf("Digite sua opção: ");
@@ -305,10 +359,15 @@ void pedidos(ListaPedidos *lista_pedidos, Catalogo *catalogo,Fila_Pedidos *fila)
                 break;
             case 2:
                 selecionar_pedido_modificar(lista_pedidos,catalogo);
+                limpar_buffer();
                 pausar();
                 break;
             case 3:
                 fechar_pedidos(lista_pedidos,fila);
+                pausar();
+                break;
+            case 4:
+                selecionar_pedido_remover(lista_pedidos,catalogo);
                 pausar();
                 break;
             case 0:

@@ -179,7 +179,30 @@ void modificar_pedidos(ListaProdutos *lista, Produto *produto)
         printf("Produto não encontrado no pedido!\n");
         return;
     }
+    printf("Deseja alterar a quantidade ou remover o produto?\n");
+    printf("1 - Nova quantidade\n");
+    printf("2 - Remover produto\n");
 
+    int resposta;
+    while(1)
+    {
+        if(scanf("%d", &resposta) != 1)
+        {
+            limpar();
+            printf("Opção inválida, digite novamente:\n");
+            continue;
+        }
+        if(resposta == 1)
+        {
+            break;
+        }
+        else if(resposta == 2)
+        {
+            remover_produto_pedido(lista,atual_produto,produto);
+            return;
+        }
+        else printf("Opção inválida, digite novamente:\n");
+    }
     printf("Digite a nova quantidade:\n");
 
     int nova_quantidade;
@@ -247,6 +270,139 @@ void fechar_pedidos(ListaPedidos *lista_pedidos,Fila_Pedidos *fila)
         printf("Pedido não encontrado ou não existente, digite novamente:\n");
     }
 }
+
+
+void remover_produto_pedido(ListaProdutos *lista,No *produto_atual, Produto *Produto_arvore)
+{
+    if(lista == NULL || produto_atual == NULL || Produto_arvore == NULL)
+    {
+        printf("Não foi possível acessar os dados para remover o produto!\n");
+        return;
+    }
+    No *atual = lista->primeiro;
+    No *anterior = NULL;
+    while(atual != NULL && atual !=produto_atual)
+    {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+    if(atual == NULL)
+    {
+        printf("Produto não encontrado no pedido!\n");
+        return;
+    }
+
+    No *remover = atual;
+
+    if(anterior == NULL)
+    {
+        lista->primeiro = atual->proximo;
+        Produto_arvore->quantidade+=atual->quantidade;
+        lista->tamanho--;
+    }
+    else
+    {
+        anterior->proximo = atual->proximo;
+        Produto_arvore->quantidade+=atual->quantidade;
+        lista->tamanho--;
+    }
+    if(atual == lista->ultimo) lista->ultimo = anterior;
+    free(remover);
+
+
+}
+
+void remover_pedido(No_pedidos *pedido, ListaPedidos *lista_pedidos, Catalogo *catalogo)
+{
+    if(pedido == NULL || lista_pedidos == NULL || catalogo == NULL)
+    {
+        printf("Não foi possível acessar os dados para remover o pedido!\n");
+        return;
+    }
+    No_pedidos *atual = lista_pedidos->primeiro;
+    No_pedidos *anterior = NULL;
+
+    while(atual != NULL && atual !=pedido)
+    {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+
+    if(atual == NULL)
+    {
+        printf("Pedido não encontrado!\n");
+        return;
+    }
+    if(atual->dados->status != 0 || atual->dados->empacotado != 0)
+    {
+        printf("Não é possível remover um pedido fechado ou já empacotado!\n");
+        return;
+    }
+    if(atual == lista_pedidos->ultimo) lista_pedidos->ultimo = anterior;
+
+    No_pedidos *remover = atual;
+    if(atual->lista->tamanho == 0)
+    {
+        if(anterior == NULL)
+        {
+            lista_pedidos->primeiro = atual->proximo;
+            lista_pedidos->tamanho--;
+            free(remover->lista);
+            free(remover->dados);
+            free(remover);
+        }
+        else
+        {
+            anterior->proximo = atual->proximo;
+            lista_pedidos->tamanho--;
+            free(remover->lista);
+            free(remover->dados);
+            free(remover);
+        }
+    }
+    else
+    {
+        No *produto_atual = atual->lista->primeiro;
+        while(atual->lista->tamanho !=0)
+        {
+            Produto *produto_catalogo = buscar_produto(raiz(catalogo),produto_atual->codigo_produto);
+
+            if(produto_catalogo != NULL)
+            {
+                produto_catalogo->quantidade+=produto_atual->quantidade;
+            }
+            No *produto_remover = produto_atual;
+            produto_atual = produto_atual->proximo;
+            free(produto_remover);
+            atual->lista->tamanho--;
+        }
+        if(anterior == NULL)
+        {
+            lista_pedidos->primeiro = atual->proximo;
+            lista_pedidos->tamanho--;
+            free(remover->lista);
+            free(remover->dados);
+            free(remover);
+        }
+        else
+        {
+            anterior->proximo = atual->proximo;
+            lista_pedidos->tamanho--;
+            free(remover->lista);
+            free(remover->dados);
+            free(remover);
+        }
+
+    }
+    if(lista_pedidos->tamanho == 0)
+    {
+        lista_pedidos->primeiro = NULL;
+        lista_pedidos->ultimo = NULL;
+    }
+}
+
 
 int consultar_codigo_pedido(dados_pedido *dados)
 {

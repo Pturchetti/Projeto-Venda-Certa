@@ -14,5 +14,7 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos,Fila_Pedidos
 void produtos(Catalogo *Catalogo);
 void pedidos(ListaPedidos *lista_pedidos, Catalogo *catalogo,Fila_Pedidos *fila);
 void selecionar_pedido_modificar(ListaPedidos *lista_pedidos, Catalogo *catalogo);
+void selecionar_pedido_remover(ListaPedidos *lista_pedidos,Catalogo *catalogo);
+
 
 #endif
