@@ -31,7 +31,7 @@ ListaPedidos *criar_lista_pedidos()
     return lista;
 }
 
-No_pedidos *inserir_lista_pedidos(ListaProdutos *lista, dados_pedido *dados, ListaPedidos *lista_pedidos)
+No_pedidos *inserir_lista_pedidos(ListaProdutos *lista, dados_pedido *dados, ListaPedidos *lista_pedidos, Catalogo *catalogo)
 {
     No_pedidos *novo = (No_pedidos*) malloc(sizeof(No_pedidos));
     if(novo == NULL)
@@ -41,6 +41,8 @@ No_pedidos *inserir_lista_pedidos(ListaProdutos *lista, dados_pedido *dados, Lis
         {
             No *remover = lista->primeiro;
             lista->primeiro = lista->primeiro->proximo;
+            Produto *produto = buscar_produto(raiz(catalogo),remover->codigo_produto);
+            if(produto != NULL) produto->quantidade += remover->quantidade;
             free(remover);
         }
         free(lista);
@@ -77,7 +79,21 @@ dados_pedido *registrar_dados(Codigos *codigos)
 
     printf("DIGITE O CÓDIGO DE ENTREGA: ");
     limpar();
-    fgets(dados->codigo_entrega,100,stdin);
+    while(1)
+    {
+        if(fgets(dados->codigo_entrega,sizeof(dados->codigo_entrega),stdin) == NULL)
+        {
+            printf("Não foi possível ler o código de entrega!\n");
+            free(dados);
+            return NULL;
+        }
+        if(strchr(dados->codigo_entrega, '\n') != NULL) break;
+
+        int caractere = getchar();
+        if(caractere == '\n' || caractere == EOF) break;
+        limpar();
+        printf("Código de entrega inválido, digite novamente:\n");
+    }
 
 
     printf("Digite a prioridade do pedido\n");
@@ -86,7 +102,18 @@ dados_pedido *registrar_dados(Codigos *codigos)
     printf("Normal - 3\n");
     while(1)
     {
-        scanf("%d", &dados->prioridade);
+        int leitura = scanf("%d", &dados->prioridade);
+        if(leitura == EOF)
+        {
+            free(dados);
+            return NULL;
+        }
+        if(leitura != 1)
+        {
+            limpar();
+            printf("Opção inválida,digite novamente\n");
+            continue;
+        }
         if(dados->prioridade != 1 && dados->prioridade != 2 && dados->prioridade !=3)
         {
             printf("Opção inválida,digite novamente\n");
@@ -97,7 +124,11 @@ dados_pedido *registrar_dados(Codigos *codigos)
     while(1)
     {
         char resposta;
-        scanf(" %c", &resposta);
+        if(scanf(" %c", &resposta) != 1)
+        {
+            free(dados);
+            return NULL;
+        }
         if(resposta == 's')
         {
             dados->status = 1;

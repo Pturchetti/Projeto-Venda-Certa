@@ -133,6 +133,8 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
         {
             No *remover = lista->primeiro;
             lista->primeiro = lista->primeiro->proximo;
+            Produto *produto = buscar_produto(raiz(catalogo),remover->codigo_produto);
+            if(produto != NULL) produto->quantidade += remover->quantidade;
             free(remover);
         }
 
@@ -149,26 +151,34 @@ void cadastrar_pedido(Codigos *codigos, ListaPedidos *lista_pedidos, Fila_Pedido
 
         if(resposta == 's')
         {
-            if(inserir_lista_pedidos(lista,dados,lista_pedidos) == NULL)
+            if(inserir_lista_pedidos(lista,dados,lista_pedidos,catalogo) == NULL)
             {
                 printf("Não foi possível inserir o pedido!\n");
                 return;
             }
 
-            if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+            if(consultar_status_pedido(dados) == 1 && inserir_fila_pedidos(lista_pedidos->ultimo,fila) == NULL)
+            {
+                alterar_status_pedido(dados,0);
+                printf("Não foi possível fechar o pedido! O pedido foi salvo em aberto.\n");
+            }
 
             cadastrar_pedido(codigos,lista_pedidos,fila,catalogo);
             break;
         }
         else if(resposta == 'n')
         {
-            if(inserir_lista_pedidos(lista,dados,lista_pedidos) == NULL)
+            if(inserir_lista_pedidos(lista,dados,lista_pedidos,catalogo) == NULL)
             {
                 printf("Não foi possível inserir o pedido!\n");
                 return;
             }
 
-            if(consultar_status_pedido(dados) == 1) inserir_fila_pedidos(lista_pedidos->ultimo,fila);
+            if(consultar_status_pedido(dados) == 1 && inserir_fila_pedidos(lista_pedidos->ultimo,fila) == NULL)
+            {
+                alterar_status_pedido(dados,0);
+                printf("Não foi possível fechar o pedido! O pedido foi salvo em aberto.\n");
+            }
 
             break;
         }

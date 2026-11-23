@@ -112,10 +112,19 @@ No_caixa *inserir_fila_caixas(Caixa *caixa, Fila_caixas *fila_caixas)
     return novo;
 }
 
+static void liberar_caixa(Caixa *caixa)
+{
+    if(caixa == NULL) return;
+    while(caixa->topo != NULL) desempilhar(caixa);
+    free(caixa);
+}
+
 int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maximo_caixa, Fila_caixas *fila_caixas, Codigos *codigos)
 {
     if(pedido_atual == NULL || fila_caixas == NULL)return 0;
 
+    int ultimo_codigo = obter_ultimo_codigo_caixa(codigos);
+    int caixas_criadas = 0;
     Caixa *caixa = criar_caixa();
 
     if(caixa == NULL)return 0;
@@ -129,7 +138,7 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
         while(quantidade_restante > 0)
         {
             No *inserir_produto = inserir_na_caixa(produto_atual, caixa);
-            if(inserir_produto == NULL) return 0;
+            if(inserir_produto == NULL) goto falha;
 
             quantidade_restante--;
 
@@ -141,13 +150,13 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
                 strcpy(caixa->codigo_entrega, codigo_atual);
                 caixa->prioridade = consultar_prioridade_pedido(pedido_atual->dados);
                 caixa->codigo_caixa = gerar_codigo_caixa(codigos);
-                incrementar_total_caixas(codigos);
 
                 No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
-                if(inserir_fila == NULL) return 0;
+                if(inserir_fila == NULL) goto falha;
+                caixas_criadas++;
 
                 caixa = criar_caixa();
-                if(caixa == NULL) return 0;
+                if(caixa == NULL) goto falha;
             }
         }
 
@@ -159,18 +168,42 @@ int empacotar_pedido(No_pedidos *pedido_atual,char *codigo_atual,int volume_maxi
         strcpy(caixa->codigo_entrega, codigo_atual);
         caixa->prioridade = consultar_prioridade_pedido(pedido_atual->dados);
         caixa->codigo_caixa = gerar_codigo_caixa(codigos);
-        incrementar_total_caixas(codigos);
 
         No_caixa *inserir_fila = inserir_fila_caixas(caixa, fila_caixas);
 
-        if( inserir_fila == NULL)return 0;
+        if(inserir_fila == NULL) goto falha;
+        caixas_criadas++;
     }
     else
     {
         free(caixa);
     }
 
+    for(int i = 0; i < caixas_criadas; i++) incrementar_total_caixas(codigos);
     return 1;
+
+falha:
+    liberar_caixa(caixa);
+
+    /* Os códigos anteriores pertencem a caixas de outras tentativas concluídas. */
+    No_caixa *atual = fila_caixas->cabeca;
+    No_caixa *anterior = NULL;
+    while(atual != NULL)
+    {
+        No_caixa *proximo = atual->proximo;
+        if(atual->caixa->codigo_caixa > ultimo_codigo)
+        {
+            if(anterior == NULL) fila_caixas->cabeca = proximo;
+            else anterior->proximo = proximo;
+            if(atual == fila_caixas->cauda) fila_caixas->cauda = anterior;
+            liberar_caixa(atual->caixa);
+            free(atual);
+            fila_caixas->tamanho--;
+        }
+        else anterior = atual;
+        atual = proximo;
+    }
+    return 0;
 }
 
 void empacotar(Fila_Pedidos *fila_pedidos, Fila_caixas *fila_caixas, Codigos *codigos)

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "lista_pedidos.h"
 #include "fila_empacotamento.h"
 #include "geral_menu.h"
@@ -6,7 +7,7 @@
 #include "caminhoes.h"
 
 int main(void) {
-    int op;
+    int op = -1;
 
     Codigos *codigos = criar_codigos();
     if(codigos == NULL) return 1;
@@ -15,8 +16,13 @@ int main(void) {
     Fila_caixas *fila_caixas = criar_fila_caixas();
     Catalogo *catalogo = criar_catalogo();
 
-    if (lista_pedidos == NULL) {
-        printf("Não foi possível criar a lista de pedidos.\n");
+    if (lista_pedidos == NULL || fila_pedidos_empacotar == NULL || fila_caixas == NULL || catalogo == NULL) {
+        printf("Não foi possível iniciar o sistema.\n");
+        free(codigos);
+        free(lista_pedidos);
+        free(fila_pedidos_empacotar);
+        free(fila_caixas);
+        free(catalogo);
         return 1;
     }
 
@@ -33,7 +39,14 @@ int main(void) {
         printf("0. Encerrar\n\n");
 
         printf("Informe sua opcao: ");
-        scanf("%d", &op);
+        int leitura = scanf("%d", &op);
+        if(leitura == EOF) break;
+        if(leitura != 1)
+        {
+            limpar_buffer();
+            printf("Opção inválida, digite um número!\n");
+            continue;
+        }
 
         // Remove o '\n' deixado pelo scanf
         limpar_buffer();

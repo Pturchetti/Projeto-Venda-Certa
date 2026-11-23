@@ -142,18 +142,46 @@ void cadastrar_produto(Catalogo *catalogo)
     printf("\n");
 
     printf("Insira o nome do produto:\n");
-    fgets(produto.nome,sizeof(produto.nome),stdin);
-    produto.nome[strcspn(produto.nome, "\n")] = '\0';
+    while(1)
+    {
+        if(fgets(produto.nome,sizeof(produto.nome),stdin) == NULL)
+        {
+            printf("Não foi possível ler o nome do produto!\n");
+            return;
+        }
+        if(strchr(produto.nome, '\n') == NULL)
+        {
+            int caractere = getchar();
+            if(caractere == '\n' || caractere == EOF) break;
+            limpar_b();
+            printf("Nome inválido, digite novamente:\n");
+        }
+        else
+        {
+            produto.nome[strcspn(produto.nome, "\n")] = '\0';
+            break;
+        }
+    }
 
     printf("\n");
 
     printf("Insira o volume do produto:\n");
-    scanf("%d",&produto.volume);
+    if(scanf("%d",&produto.volume) != 1)
+    {
+        limpar_b();
+        printf("Volume inválido!\n");
+        return;
+    }
 
     printf("\n");
 
     printf("Insira a quantidade do produto:\n");
-    scanf("%d",&produto.quantidade);
+    if(scanf("%d",&produto.quantidade) != 1)
+    {
+        limpar_b();
+        printf("Quantidade inválida!\n");
+        return;
+    }
 
     if(produto.volume<1 || produto.volume >10 || produto.quantidade<1)
     {
@@ -234,7 +262,18 @@ void modificar_produtos(Catalogo *catalogo)
     int nova_quantidade;
     while(1)
     {
-        scanf("%d", &nova_quantidade);
+        int leitura = scanf("%d", &nova_quantidade);
+        if(leitura == EOF)
+        {
+            printf("Não foi possível ler a quantidade do produto!\n");
+            return;
+        }
+        if(leitura != 1)
+        {
+            limpar_b();
+            printf("Quantidade inválida, digite novamente\n");
+            continue;
+        }
         if(nova_quantidade < 0)
         {
             printf("Quantidade inválida, digite novamente\n");

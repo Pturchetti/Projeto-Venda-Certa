@@ -24,7 +24,7 @@ typedef struct ListaPedidos{
 
 ListaPedidos *criar_lista_pedidos();
 
-No_pedidos *inserir_lista_pedidos(ListaProdutos *lista, dados_pedido *dados, ListaPedidos *lista_pedidos);
+No_pedidos *inserir_lista_pedidos(ListaProdutos *lista, dados_pedido *dados, ListaPedidos *lista_pedidos, Catalogo *catalogo);
 
 dados_pedido *registrar_dados(Codigos *codigos);
 
